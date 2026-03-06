@@ -1,819 +1,787 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <meta name="google-site-verification" content="GnB-KZuUOlca6yC..." />
- <title>Auto-École de Longueau | Permis B, AAC, Boîte auto,manuelle</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="GnB-KZuUOlca6yC..." />
+  <title>Auto-École de Longueau | Permis B, AAC, Boîte auto,manuelle</title>
 
- <!-- FAVICON -->
- <link rel="icon" href="favicon.jpg" type="image/png">
+  <!-- FAVICON -->
+  <link rel="icon" href="favicon.jpg" type="image/png">
 
- <style>
- html {
- scroll-behavior: smooth;
+  <style>
+    html {
+  scroll-behavior: smooth;
 }
- /* RESET */
- * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* RESET */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
- body {
- font-family: Arial, sans-serif;
- background: #ffffff;
- color: #000;
- line-height: 1.6;
- }
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #000;
+      line-height: 1.6;
+    }
 
- .header-image img { width: 100%; height: auto; display: block; }
+    .header-image img { width: 100%; height: auto; display: block; }
 
- main { max-width: 1200px; margin: auto; padding: 30px 20px; }
+    main { max-width: 1200px; margin: auto; padding: 30px 20px; }
 
- /* Animation des sections au scroll - version plus visible */
-section {
- margin-bottom: 50px;
- padding: 15px;
- opacity: 0;
- transform: translateY(80px) scale(0.95); /* plus de décalage */
- transition: opacity 0.8s ease, transform 0.8s ease;
-}
+    section {
+      margin-bottom: 50px;
+      padding: 15px;
+      opacity: 1;
+      transform: translateY(40px);
+      transition: all 1s ease;
+    }
 
-section.visible {
- opacity: 1;
- transform: translateY(0) scale(1); /* effet “remonte et grandit” */
-}
+    h2 {
+      margin-bottom: 25px;
+      text-align: left;
+      border-bottom: 2px solid #00bfff;
+      display: inline-block;
+      padding-bottom: 5px;
+      font-size: 1.8em;
+    }
 
- h2 {
- margin-bottom: 25px;
- text-align: left;
- border-bottom: 2px solid #00bfff;
- display: inline-block;
- padding-bottom: 5px;
- font-size: 1.8em;
- }
+    ul { list-style: none; }
 
- ul { list-style: none; }
+    li { margin-bottom: 12px; }
 
- li { margin-bottom: 12px; }
+    footer {
+      background: #111;
+      color: #ffffff;
+      text-align: center;
+      padding: 20px 0;
+    }
 
- footer {
- background: #111;
- color: #ffffff;
- text-align: center;
- padding: 20px 0;
- }
+    /* CADRES TARIFS */
+    .cadre-tarifs, .forfaits-ajout {
+      background: #ffffff;
+      border: 2px solid #00bfff;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
 
- /* CADRES TARIFS */
- .cadre-tarifs, .forfaits-ajout {
- background: #ffffff;
- border: 2px solid #00bfff;
- padding: 20px;
- margin-bottom: 30px;
- }
+    .cadre-tarifs h3, .forfaits-ajout h3 { text-align: left; margin-bottom: 15px; }
+    .cadre-tarifs ul, .forfaits-ajout ul { padding-left: 25px; }
 
- .cadre-tarifs h3, .forfaits-ajout h3 { text-align: left; margin-bottom: 15px; }
- .cadre-tarifs ul, .forfaits-ajout ul { padding-left: 25px; }
+    /* BOUTON HAUT */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #00bfff;
+      color: #ffffff;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: none;
+    }
 
- /* BOUTON HAUT */
- #backToTop {
- position: fixed;
- bottom: 30px;
- right: 30px;
- background: #00bfff;
- color: #ffffff;
- border: none;
- padding: 12px 16px;
- border-radius: 5px;
- cursor: pointer;
- display: none;
- }
+    /* LOGOS + LABEL + AFFILIATION côte à côte */
+    .logos-affiliation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
 
- /* LOGOS + LABEL + AFFILIATION côte à côte */
- .logos-affiliation {
- display: flex;
- justify-content: center;
- align-items: center;
- gap: 20px;
- margin-top: 30px;
- flex-wrap: wrap;
- }
+    .logos-affiliation img {
+      width: 250px;
+      max-width: 100%;
+      height: auto;
+    }
 
- .logos-affiliation img {
- width: 250px;
- max-width: 100%;
- height: auto;
- }
+    /* L'équipe flex côte à côte */
+    .equipe {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
 
- /* L'équipe flex côte à côte */
- .equipe {
- display: flex;
- justify-content: center;
- gap: 50px;
- flex-wrap: wrap;
- margin-top: 30px;
- }
+    .membre {
+      text-align: center;
+      max-width: 250px;
+    }
 
- .membre {
- text-align: center;
- max-width: 250px;
- }
+    .membre img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
 
- .membre img {
- width: 100%;
- height: auto;
- border-radius: 10px;
- }
+    @media (max-width: 600px) {
+      .logos-affiliation img, .membre img { width: 100%; margin-bottom: 15px; }
+    }
 
- @media (max-width: 600px) {
- .logos-affiliation img, .membre img { width: 100%; margin-bottom: 15px; }
- }
+    /* SEPARATEUR BLEU */
+    .separator hr {
+      border: 0;
+      height: 3px;
+      background-color: #00bfff;
+      width: 80%;
+      margin: 30px auto 0 auto;
+    }
 
- /* SEPARATEUR BLEU */
- .separator hr {
- border: 0;
- height: 3px;
- background-color: #00bfff;
- width: 80%;
- margin: 30px auto 0 auto;
- }
+    .separator p {
+      max-width: 800px;
+      margin: 15px auto 0 auto;
+      font-size: 1em;
+      line-height: 1.6;
+      text-align: center;
+    }
 
- .separator p {
- max-width: 800px;
- margin: 15px auto 0 auto;
- font-size: 1em;
- line-height: 1.6;
- text-align: center;
- }
+    /* SECTION AVIS */
+    #avis h2 {
+      border-bottom: 2px solid #00bfff;
+      display: inline-block;
+      padding-bottom: 5px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
- /* SECTION AVIS */
- #avis h2 {
- border-bottom: 2px solid #00bfff;
- display: inline-block;
- padding-bottom: 5px;
- margin-bottom: 20px;
- text-align: center;
- }
+    #avis ul {
+      list-style-type: disc;
+      padding-left: 25px;
+    }
 
- #avis ul {
- list-style-type: disc;
- padding-left: 25px;
- }
+    #avis li p {
+      margin: 10px 0;
+      font-size: 1em;
+      line-height: 1.6;
+      text-align: left;
+    }
 
- #avis li p {
- margin: 10px 0;
- font-size: 1em;
- line-height: 1.6;
- text-align: left;
- }
-
- /* FORMULAIRE PRISE DE RENDEZ-VOUS */
+      /* FORMULAIRE PRISE DE RENDEZ-VOUS */
 .form-rdv {
- max-width: 600px;
- margin: 0 auto;
- display: flex;
- flex-direction: column;
- gap: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .form-rdv label {
- font-size: 20px; /* Taille des labels */
- font-weight: bold;
+  font-size: 20px;       /* Taille des labels */
+  font-weight: bold;
 }
 
 .form-rdv input,
 .form-rdv select,
 .form-rdv textarea {
- width: 100%;
- padding: 16px;
- font-size: 18px; /* Taille du texte dans les champs */
- border: 1px solid #ccc;
- border-radius: 5px;
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;       /* Taille du texte dans les champs */
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .form-rdv button {
- padding: 18px;
- font-size: 20px;
- background: #00bfff;
- color: #fff;
- border: none;
- border-radius: 5px;
- cursor: pointer;
+  padding: 18px;
+  font-size: 20px;
+  background: #00bfff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .form-rdv button:hover {
- background: #0097d6;
+  background: #0097d6;
 }
 
 @media (max-width: 600px) {
- .form-rdv label {
- font-size: 18px;
- }
+  .form-rdv label {
+    font-size: 18px;
+  }
 
- .form-rdv input,
- .form-rdv select,
- .form-rdv textarea {
- font-size: 16px;
- padding: 14px;
- }
+  .form-rdv input,
+  .form-rdv select,
+  .form-rdv textarea {
+    font-size: 16px;
+    padding: 14px;
+  }
 
- .form-rdv button {
- font-size: 18px;
- padding: 16px;
- }
+  .form-rdv button {
+    font-size: 18px;
+    padding: 16px;
+  }
 }
 
 
 #menu-bandeau a:hover {
- background: #00bfff;
- color: #000000;
- border-radius: 5px;
+  background: #00bfff;
+  color: #ffffff;
+  border-radius: 5px;
 }
 /* Menu fixe en haut */
 #menu-bandeau {
- position: fixed;
- top: 0;
- left: 0;
- width: 100%;
- background-color: #000000; /* bandeau noir */
- display: flex;
- justify-content: center;
- gap: 30px;
- padding: 12px 0;
- z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #000000; /* bandeau noir */
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 12px 0;
+  z-index: 1000;
 }
 
 #menu-bandeau a {
- color: #00bfff; /* texte bleu */
- text-decoration: none;
- font-weight: bold;
- font-size: 15px;
- padding: 5px 10px;
+  color: #00bfff; /* texte bleu */
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 5px 10px;
 }
 
 #menu-bandeau a:hover {
- background: #00bfff;
- color: #111;
- border-radius: 5px;
+  background: #00bfff;
+  color: #111;
+  border-radius: 5px;
 }
 /* Décalage du contenu sous le menu fixe */
 body {
- padding-top: 58px; /* hauteur du menu sur PC */
+  padding-top: 58px; /* hauteur du menu sur PC */
 }
 
 @media (max-width: 600px) {
- #menu-bandeau {
- display: none; /* cacher le menu fixe sur mobile */
- }
+  #menu-bandeau {
+    display: none; /* cacher le menu fixe sur mobile */
+  }
 }
 @media (max-width: 600px) {
- body {
- padding-top: 0; /* enlève le décalage du menu sur mobile */
- }
+  body {
+    padding-top: 0; /* enlève le décalage du menu sur mobile */
+  }
 }
 /* VÉHICULES FLEX CÔTÉ À CÔTÉ, CENTRÉS */
 .vehicules {
- display: flex;
- justify-content: center;
- gap: 50px;
- flex-wrap: wrap;
- margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+  margin-top: 30px;
 }
 
 .vehicule {
- text-align: center;
- max-width: 250px;
+  text-align: center;
+  max-width: 250px;
 }
 
 .vehicule img {
- width: 100%;
- height: auto;
- border-radius: 10px;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
 }
 
 /* MOBILE */
 @media (max-width: 600px) {
- .vehicule img {
- width: 100%;
- margin-bottom: 15px;
- }
+  .vehicule img {
+    width: 100%;
+    margin-bottom: 15px;
+  }
 }
 /* FAQ */
 .faq-question {
- width: 100%;
- background-color: #fff; /* fond blanc */
- color: #111; /* texte noir */
- cursor: pointer;
- padding: 15px 20px;
- border: 2px solid #00bfff; /* bordure bleue */
- text-align: left;
- outline: none;
- font-size: 18px;
- font-weight: bold;
- margin-bottom: 10px;
- border-radius: 5px;
- transition: background 0.3s, border-color 0.3s;
+  width: 100%;
+  background-color: #fff;           /* fond blanc */
+  color: #111;                      /* texte noir */
+  cursor: pointer;
+  padding: 15px 20px;
+  border: 2px solid #00bfff;       /* bordure bleue */
+  text-align: left;
+  outline: none;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  transition: background 0.3s, border-color 0.3s;
 }
 
 .faq-question:hover {
- background-color: #f0f8ff; /* léger bleu clair au survol */
- border-color: #0097d6; /* bordure un peu plus foncée au survol */
+  background-color: #f0f8ff;        /* léger bleu clair au survol */
+  border-color: #0097d6;            /* bordure un peu plus foncée au survol */
 }
 
 .faq-answer {
- display: none;
- padding: 15px 20px;
- background-color: #f1f1f1;
- margin-bottom: 10px;
- border-radius: 5px;
+  display: none;
+  padding: 15px 20px;
+  background-color: #f1f1f1;
+  margin-bottom: 10px;
+  border-radius: 5px;
 }
 
 .faq-answer p {
- margin: 0;
+  margin: 0;
 }
 /* Zoom léger des statistiques sur PC et mobile */
 #Statistiques img {
- transform: scale(1.3); /* 1.5 = 50% plus grand */
- transition: transform 0.3s ease; /* animation douce */
+  transform: scale(1.3); /* 1.5 = 50% plus grand */
+  transition: transform 0.3s ease; /* animation douce */
 }
 
 /* Optionnel : zoom encore un peu plus sur mobile */
 @media (max-width: 600px) {
- #Statistiques img {
- transform: scale(1.7); /* 70% plus grand sur petit écran */
- }
+  #Statistiques img {
+    transform: scale(1.7); /* 70% plus grand sur petit écran */
+  }
 }
 
- /* Décalage pour menu fixe sur ancres */
- .anchor-offset {
- display: block;
- position: relative;
- top: -60px; /* hauteur du menu fixe */
- visibility: hidden; /* invisible */
- }
+  /* Décalage pour menu fixe sur ancres */
+  .anchor-offset {
+    display: block;
+    position: relative;
+    top: -60px; /* hauteur du menu fixe */
+    visibility: hidden; /* invisible */
+  }
 /* INFOS IMAGE */
 .infos {
- display: flex;
- justify-content: center;
- flex-wrap: wrap;
- margin-top: 30px;
- text-align: center;
- max-width: 250px; /* limite identique à voiture1 */
- margin-left: auto;
- margin-right: auto; /* centre le bloc */
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  text-align: center;
+  max-width: 250px;   /* limite identique à voiture1 */
+  margin-left: auto;
+  margin-right: auto;  /* centre le bloc */
 }
 
 .infos img {
- width: 100%;
- height: auto;
- border-radius: 10px;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
 }
- </style>
+  </style>
 
- <script src="https://kit.fontawesome.com/0b1c9b6f5f.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/0b1c9b6f5f.js" crossorigin="anonymous"></script>
  
 <!-- MENU FIXE AU-DESSUS DU LOGO -->
- <nav id="menu-bandeau">
- <a href="#infos">Infos de dernière minute</a>
- <a href="#horaires">Horaires</a>
- <a href="#contacts">Contacts</a>
- <a href="#tarifs">Tarifs</a>
- <a href="#vehicules">Nos véhicules</a>
- <a href="#equipe">L'équipe</a>
- <a href="#avis">Avis</a>
- <!--<a href="#Statistiques">Statistiques</a>-->
- <a href="#rendez-vous">Rendez-vous</a>
- <a href="#faq">FAQ</a>
- </nav>
- <!-- WRAPPER LOGO POUR LE PUSHSOUS LE MENU -->
- <header class="header-image">
- <img src="auto-ecole.jpg" alt="Auto-École de Longueau">
- </header>
+  <nav id="menu-bandeau">
+    <a href="#infos">Infos de dernière minute</a>
+    <a href="#horaires">Horaires</a>
+    <a href="#contacts">Contacts</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#vehicules">Nos véhicules</a>
+    <a href="#equipe">L'équipe</a>
+    <a href="#avis">Avis</a>
+    <!--<a href="#Statistiques">Statistiques</a>-->
+    <a href="#rendez-vous">Rendez-vous</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <!-- WRAPPER LOGO POUR LE PUSHSOUS LE MENU -->
+  <header class="header-image">
+    <img src="auto-ecole.jpg" alt="Auto-École de Longueau">
+  </header>
 
 <main>
 
- <!-- LOGOS, LABEL QUALITÉ ET AFFILIATION EN HAUT -->
- <section id="logos-affiliation">
- <div class="logos-affiliation">
- <img src="affiliation.jpg" alt="Code Rousseau">
- <img src="label-qualite.jpg" alt="École de conduite qualité">
- <img src="permis-1e.jpg" alt="Affiliation">
- </div>
- </section>
+  <!-- LOGOS, LABEL QUALITÉ ET AFFILIATION EN HAUT -->
+  <section id="logos-affiliation">
+    <div class="logos-affiliation">
+      <img src="affiliation.jpg" alt="Code Rousseau">
+      <img src="label-qualite.jpg" alt="École de conduite qualité">
+      <img src="permis-1e.jpg" alt="Affiliation">
+    </div>
+  </section>
 
 
- <!-- Infos de dernière minute -->
- <section id="infos">
- <span class="anchor-offset"></span>
- <h2>Infos de dernière minute</h2>
- <div class="infos">
- <!--<img src="infos.jpg" alt="Infos de dernière minute">-->
- </div>
- <ul style="text-align:center;">
-   <li>Le bureau sera exceptionnellement fermé mercredi 25 février 2026 !</li>
- <li>Merci de tenir compte de ces informations !</li>
- </ul>
+  <!-- Infos de dernière minute -->
+  <section id="infos">
+  <span class="anchor-offset" id="infos"></span>
+  <h2>Infos de dernière minute</h2>
+  <div class="infos">
+    <img src="infos.jpg" alt="Infos de dernière minute">
+  </div>
+  <ul style="text-align:center;">
+    <li>Merci de tenir compte de ces informations !</li>
+  </ul>
 </section>
  
- <!-- HORAIRES D'OUVERTURE -->
- <section id="horaires">
- <span class="anchor-offset"></span>
- <h2>Horaires d'ouverture du bureau et des sessions de codes</h2>
- <ul style="text-align:center;">
- <li>Lundi : 14h00 – 16h00</li>
- <li>Mardi : 17h30 – 19h30</li>
- <li>Mercredi : 16h00 – 18h00</li>
- <li>Jeudi : Fermé</li>
- <li>Vendredi : 17h30 – 19h30</li>
- <li>Samedi : 10h00 – 12h00</li>
- <li>Dimanche : Fermé</li>
- </ul>
- </section>
+  <!-- HORAIRES D'OUVERTURE -->
+  <section id="horaires">
+    <span class="anchor-offset" id="horaires"></span>
+    <h2>Horaires d'ouverture du bureau et des sessions de codes</h2>
+    <ul style="text-align:center;">
+      <li>Lundi : 14h00 – 16h00</li>
+      <li>Mardi : 17h30 – 19h30</li>
+      <li>Mercredi : 16h00 – 18h00</li>
+      <li>Jeudi : Fermé</li>
+      <li>Vendredi : 17h30 – 19h30</li>
+      <li>Samedi : 10h00 – 12h00</li>
+      <li>Dimanche : Fermé</li>
+    </ul>
+  </section>
 
- <!-- CONTACTS -->
- <section id="contacts">
- <h2>Contacts</h2>
- <p style="text-align:center;"><b>Téléphone fix :</b> 03 22 53 93 60</p>
- <p style="text-align:center;"><b>Téléphone portable :</b> 06 07 57 75 33</p>
- <p style="text-align:center;"><b>Email :</b> autoecoledelongueau@free.fr</p>
- <p style="text-align:center;"><b>Adresse :</b> 115 Avenue Henri Barbusse, 80330 Longueau</p>
- <p style="text-align:center;"><b>Facebook :</b> <a href="https://www.facebook.com/profile.php?id=100054197694817&locale=fr_FR" style="color:#00bfff; text-decoration:underline;" target="_blank">Auto-École de Longueau</a></p>
- </section>
+  <!-- CONTACTS -->
+  <section id="contacts">
+    <h2>Contacts</h2>
+    <p style="text-align:center;"><b>Téléphone fix :</b> 03 22 53 93 60</p>
+    <p style="text-align:center;"><b>Téléphone portable :</b> 06 07 57 75 33</p>
+    <p style="text-align:center;"><b>Email :</b> autoecoledelongueau@free.fr</p>
+    <p style="text-align:center;"><b>Adresse :</b> 115 Avenue Henri Barbusse, 80330 Longueau</p>
+    <p style="text-align:center;"><b>Facebook :</b> <a href="https://www.facebook.com/profile.php?id=100054197694817&locale=fr_FR" style="color:#00bfff; text-decoration:underline;" target="_blank">Auto-École de Longueau</a></p>
+  </section>
 
- <!-- TARIFS -->
- <section id="tarifs">
- <h2>Tarifs</h2>
+  <!-- TARIFS -->
+  <section id="tarifs">
+    <h2>Tarifs</h2>
 
- <div class="forfaits-ajout">
- <h3>Forfaits</h3>
- <ul>
- <li><strong>Formule théorique :</strong> 325 €<br>Frais administratifs – Formation théorique – 1 Class Rousseau + 1 manuel code</li>
- <li><strong>Permis B – Boîte manuelle :</strong> 1280 €<br>Frais administratifs – Formation théorique - 20h de cours pratiques – 1 accompagnement pratique (passage permis)</li>
- <li><strong>Permis B – Boîte manuelle :</strong> 1580 €<br>Frais administratifs – Formation théorique - 25h de cours pratiques – 2 accompagnements pratiques (passage permis)</li>
- <li><strong>Permis B – Boîte automatique :</strong> 1050 €<br>Frais administratifs – Formation théorique - 13h leçons cours pratiques – 1 accompagnement pratique</li>
- <li><strong>Permis AAC (apprentissage anticipé de la conduite/ dès 15 ans) – Boîte manuelle :</strong> 1150 €<br>Frais administratifs – Formation théorique - 20h leçons cours pratiques – 1 Rendez-vous préalable (2h)</li>
- <li><strong>Permis AAC (apprentissage anticipé de la conduite/ dès 15 ans) – Boîte automatique :</strong> 1000 €<br>Frais administratifs – Formation théorique - 13h leçons cours pratiques – 1 Rendez-vous préalable (2h)</li>
- <li><strong>Permis B - Boîte automatique sans code :</strong> 850 €<br>Frais administratifs - 13h leçons cours pratiques - 1 accompagnement pratique</li>
- <li><strong>Permis B - Boîte manuelle sans code :</strong> 1130 €<br>Frais administratifs - 20h leçons cours pratiques - 1 accompagnement pratique</li>
- <li><strong>Formation passerelle :</strong> 470 €<br>Frais administratifs - 7h leçons cours pratiques - 1 évaluation de départ</li>
- </ul>
- </div>
+    <div class="forfaits-ajout">
+      <h3>Forfaits</h3>
+      <ul>
+        <li><strong>Formule théorique :</strong> 325 €<br>Frais administratifs – Formation théorique – 1 Class Rousseau + 1 manuel code</li>
+        <li><strong>Permis B – Boîte manuelle :</strong> 1280 €<br>Frais administratifs – Formation théorique - 20h de cours pratiques – 1 accompagnement pratique (passage permis)</li>
+        <li><strong>Permis B – Boîte manuelle :</strong> 1580 €<br>Frais administratifs – Formation théorique - 25h de cours pratiques – 2 accompagnements pratiques (passage permis)</li>
+        <li><strong>Permis B – Boîte automatique :</strong> 1050 €<br>Frais administratifs – Formation théorique - 13h leçons cours pratiques – 1 accompagnement pratique</li>
+        <li><strong>Permis AAC (apprentissage anticipé de la conduite/ dès 15 ans) – Boîte manuelle :</strong> 1150 €<br>Frais administratifs – Formation théorique - 20h leçons cours pratiques – 1 Rendez-vous préalable (2h)</li>
+        <li><strong>Permis AAC (apprentissage anticipé de la conduite/ dès 15 ans) – Boîte automatique :</strong> 1000 €<br>Frais administratifs – Formation théorique - 13h leçons cours pratiques – 1 Rendez-vous préalable (2h)</li>
+        <li><strong>Permis B - Boîte automatique sans code :</strong> 850 €<br>Frais administratifs - 13h leçons cours pratiques - 1 accompagnement pratique</li>
+        <li><strong>Permis B - Boîte manuelle sans code :</strong> 1130 €<br>Frais administratifs - 20h leçons cours pratiques - 1 accompagnement pratique</li>
+        <li><strong>Formation passerelle :</strong> 470 €<br>Frais administratifs - 7h leçons cours pratiques - 1 évaluation de départ</li>
+      </ul>
+    </div>
 
- <div class="cadre-tarifs">
- <h3>Enseignement théorique</h3>
- <ul>
- <li><strong>Test audio visuel collectif :</strong> 15 €</li>
- <li><strong>Forfait code (6 mois) :</strong> 200 €</li>
- </ul>
- </div>
+    <div class="cadre-tarifs">
+      <h3>Enseignement théorique</h3>
+      <ul>
+        <li><strong>Test audio visuel collectif :</strong> 15 €</li>
+        <li><strong>Forfait code (6 mois) :</strong> 200 €</li>
+      </ul>
+    </div>
 
- <div class="cadre-tarifs">
- <h3>Constitution du dossier et présentation à l'examen</h3>
- <ul>
- <li><strong>Frais administratifs :</strong> 80 €</li>
- <li>Accompagnement pratique de conduite avec véhicule :</li>
- <li><strong>Frais d'accompagnement permis B (boîte manuelle) :</strong> 50 €</li>
- <li><strong>Frais d'accompagnement permis B (boîte automatique) :</strong> 55 €</li>
- <li><strong>Redevance paiement ETG :</strong> 30 €</li>
- </ul>
- </div>
+    <div class="cadre-tarifs">
+      <h3>Constitution du dossier et présentation à l'examen</h3>
+      <ul>
+        <li><strong>Frais administratifs :</strong> 80 €</li>
+        <li>Accompagnement pratique de conduite avec véhicule :</li>
+        <li><strong>Frais d'accompagnement permis B (boîte manuelle) :</strong> 50 €</li>
+        <li><strong>Frais d'accompagnement permis B (boîte automatique) :</strong> 55 €</li>
+        <li><strong>Redevance paiement ETG :</strong> 30 €</li>
+      </ul>
+    </div>
 
- <div class="cadre-tarifs">
- <h3>Tarifs permis B, AAC et conduite supervisée</h3>
- <ul>
- <li><strong>Évaluation (hors forfait) :</strong> 40 €</li>
- <li><strong>Leçon de conduite 1h Permis B (boîte manuelle) :</strong> 50 €</li>
- <li><strong>Leçon de conduite 1h Permis B (boîte automatique) :</strong> 55 €</li>
- <li><strong>Leçon de conduite AAC :</strong> 50 €</li>
- <li><strong>Rendez-vous préalable (boîte manuelle) :</strong> 50 €</li>
- <li><strong>Rendez-vous préalable (boîte automatique) :</strong> 55 €</li>
- <li><strong>Rendez-vous pédagogiques théorique et pratique (boîte automatique) :</strong> 90 €</li>
- <li><strong>Rendez-vous pédagogiques théorique et pratique (boîte manuelle) :</strong> 86 €</li>
- </ul>
- </div>
- </section>
+    <div class="cadre-tarifs">
+      <h3>Tarifs permis B, AAC et conduite supervisée</h3>
+      <ul>
+        <li><strong>Évaluation (hors forfait) :</strong> 40 €</li>
+        <li><strong>Leçon de conduite 1h Permis B (boîte manuelle) :</strong> 50 €</li>
+        <li><strong>Leçon de conduite 1h Permis B (boîte automatique) :</strong> 55 €</li>
+        <li><strong>Leçon de conduite AAC :</strong> 50 €</li>
+        <li><strong>Rendez-vous préalable (boîte manuelle) :</strong> 50 €</li>
+        <li><strong>Rendez-vous préalable (boîte automatique) :</strong> 55 €</li>
+        <li><strong>Rendez-vous pédagogiques théorique et pratique (boîte automatique) :</strong> 90 €</li>
+        <li><strong>Rendez-vous pédagogiques théorique et pratique (boîte manuelle) :</strong> 86 €</li>
+      </ul>
+    </div>
+  </section>
 
 <!-- NOS VÉHICULES -->
 <section id="vehicules">
- <h2>Nos véhicules</h2>
- <div class="vehicules">
- <div class="vehicule">
- <img src="voiture1.jpg" alt="Voiture boîte automatique">
- <p><strong>Voiture automatique :</strong> DS 3 Crossback - Rouge Diesel 2024 <br> Pour une conduite plus douce et moderne.</p>
- </div>
- <div class="vehicule">
- <img src="voiture2.jpg" alt="Voiture boîte manuelle">
- <p><strong>Voiture manuelle :</strong> Citroën C3 - Bleue Diesel 2024 <br> Idéale pour apprendre les bases de la conduite manuelle.</p>
- </div>
- 
- </div>
+  <h2>Nos véhicules</h2>
+  <div class="vehicules">
+    <div class="vehicule">
+      <img src="voiture1.jpg" alt="Voiture boîte automatique">
+      <p><strong>Voiture automatique :</strong> DS 3 Crossback - Rouge Diesel 2024 <br> Pour une conduite plus douce et moderne.</p>
+    </div>
+    <div class="vehicule">
+      <img src="voiture2.jpg" alt="Voiture boîte manuelle">
+      <p><strong>Voiture manuelle :</strong> Citroën C3 - Bleue Diesel 2024 <br> Idéale pour apprendre les bases de la conduite manuelle.</p>
+    </div>
+   
+  </div>
 </section>
- <!-- ÉQUIPE + TRAIT BLEU + TEXTE FINAL -->
- <section id="equipe">
- <h2>L'équipe</h2>
- <div class="equipe">
- <div class="membre">
- <img src="monitrice1.jpg" alt="Monitrice 1">
- <p>Sylvie – Directrice de l'auto-école et monitrice depuis 1992, une expérience qui reflète sa passion pour la formation et la sécurité routière.</p>
- </div>
- <div class="membre">
- <img src="monitrice2.jpg" alt="Monitrice 2">
- <p>Sarah – Monitrice depuis 2025, une énergie nouvelle et une approche moderne de l’apprentissage et de la conduite.</p>
- </div>
- </div>
+  <!-- ÉQUIPE + TRAIT BLEU + TEXTE FINAL -->
+  <section id="equipe">
+    <h2>L'équipe</h2>
+    <div class="equipe">
+      <div class="membre">
+        <img src="monitrice1.jpg" alt="Monitrice 1">
+        <p>Sylvie – Directrice de l'auto-école et monitrice depuis 1992, une expérience qui reflète sa passion pour la formation et la sécurité routière.</p>
+      </div>
+      <div class="membre">
+        <img src="monitrice2.jpg" alt="Monitrice 2">
+        <p>Sarah – Monitrice depuis 2025, une énergie nouvelle et une approche moderne de l’apprentissage et de la conduite.</p>
+      </div>
+    </div>
 
- <div class="separator">
- <hr>
- <p>
- Sylvie et Sarah accompagnent les élèves de <strong>Longueau</strong> et des communes voisines dans la réussite du <strong>permis B</strong>, en <strong>boîte manuelle</strong> et <strong>boîte automatique</strong>. 
- Notre auto-école propose également la conduite accompagnée (AAC), la conduite supervisée et la formation passerelle.
- </p>
- </div>
- </section>
+    <div class="separator">
+      <hr>
+      <p>
+        Sylvie et Sarah accompagnent les élèves de <strong>Longueau</strong> et des communes voisines dans la réussite du <strong>permis B</strong>, en <strong>boîte manuelle</strong> et <strong>boîte automatique</strong>.  
+        Notre auto-école propose également la conduite accompagnée (AAC), la conduite supervisée et la formation passerelle.
+      </p>
+    </div>
+  </section>
 
- <!-- SECTION AVIS À GAUCHE AVEC PUCES -->
- <section id="avis" style="margin-bottom:30px;">
- <h2>Avis de nos élèves</h2>
- <ul>
- <li><p>"Merci à Sylvie et Sarah pour ces mois d’apprentissage, pour tous les conseils qui m’ont permis de réussir mon examen du permis de conduire.
+  <!-- SECTION AVIS À GAUCHE AVEC PUCES -->
+  <section id="avis" style="margin-bottom:30px;">
+    <h2>Avis de nos élèves</h2>
+    <ul>
+      <li><p>"Merci à Sylvie et Sarah pour ces mois d’apprentissage, pour tous les conseils qui m’ont permis de réussir mon examen du permis de conduire.
 Avec de la persévérance et de l’espoir, merci d’avoir cru en moi.
 Deux monitrices toujours très souriantes, dynamiques et dans la bonne humeur."</p></li>
- <li><p>"Superbe auto-école, Sylvie est très pédagogue. Malgré le fait d’être passée avant dans une autre auto-école, elle a accepté de m’aider et de me conseiller. Elle est très patiente et investie avec tous ses élèves. Je vous la recommande, vous aurez votre permis à coup sûr !"</p></li>
- <li><p>"Auto-école vivement recommandée ! Sylvie est une monitrice très sympathique, patiente et à l'écoute, mais aussi très professionnelle et pédagogue. Un grand merci pour tous les précieux conseils qu'elle a pu me donner et qui m'ont aidée à obtenir mon permis !!!"</p></li>
- </ul>
- </section>
+      <li><p>"Superbe auto-école, Sylvie est très pédagogue. Malgré le fait d’être passée avant dans une autre auto-école, elle a accepté de m’aider et de me conseiller. Elle est très patiente et investie avec tous ses élèves. Je vous la recommande, vous aurez votre permis à coup sûr !"</p></li>
+      <li><p>"Auto-école vivement recommandée ! Sylvie est une monitrice très sympathique, patiente et à l'écoute, mais aussi très professionnelle et pédagogue. Un grand merci pour tous les précieux conseils qu'elle a pu me donner et qui m'ont aidée à obtenir mon permis !!!"</p></li>
+    </ul>
+  </section>
  
- <!-- IMAGE AVIS GOOGLE -->
- <section id="avis-google" style="text-align:center; margin-bottom:50px;">
- <img src="avis-google.jpg" alt="Avis Google : 4,9 * sur 178 avis" style="width:250px; height:auto;">
- </section>
+  <!-- IMAGE AVIS GOOGLE -->
+  <section id="avis-google" style="text-align:center; margin-bottom:50px;">
+    <img src="avis-google.jpg" alt="Avis Google : 4,9 * sur 178 avis" style="width:250px; height:auto;">
+  </section>
 <!--STATISTIQUES
 <section id="Statistiques" style="margin-bottom:20px;">
- <h2 style="text-align:center;">Statistiques</h2><br>
- <br><br><br><img src="graphique.jpg" alt="graphique" style="width:80%; max-width:400px; height:auto; display:block; margin: 0 auto;">
- <br><br><p style="text-align:center; font-weight:bold; margin-top:10px;">
- SOIT PLUS DE 98% DE RÉUSSITE SUR 5 ANS
- </p>
+  <h2 style="text-align:center;">Statistiques</h2><br>
+  <br><br><br><img src="graphique.jpg" alt="graphique" style="width:80%; max-width:400px; height:auto; display:block; margin: 0 auto;">
+  <br><br><p style="text-align:center; font-weight:bold; margin-top:10px;">
+    SOIT PLUS DE 98% DE RÉUSSITE SUR 5 ANS
+  </p>
 </section>-->
 <!-- PRISE DE RENDEZ-VOUS -->
 <section id="rendez-vous">
- <h2>Prise de rendez-vous</h2>
+  <h2>Prise de rendez-vous</h2>
 
- <p style="text-align:center; margin-bottom:20px;font-size:1em;">
- Pour toute demande d’inscription, d’évaluation de départ ou de renseignements complémentaires, 
- merci de remplir le formulaire ci-dessous.
- </p>
+  <p style="text-align:center; margin-bottom:20px;font-size:1em;">
+    Pour toute demande d’inscription, d’évaluation de départ ou de renseignements complémentaires,  
+    merci de remplir le formulaire ci-dessous.
+  </p>
 
- <form action="https://formspree.io/f/meelvaql" method="POST" class="form-rdv">
+  <form action="https://formspree.io/f/mreaykpj" method="POST" class="form-rdv">
 
- <label for="Nom">Nom :</label>
- <input type="text" id="Nom" name="Nom" placeholder="Nom" required>
+    <label for="Nom">Nom :</label>
+    <input type="text" id="Nom" name="Nom" placeholder="Nom" required>
 
- <label for="Prénom">Prénom :</label>
- <input type="text" id="Prénom" name="Prénom" placeholder="Prénom" required>
+    <label for="Prénom">Prénom :</label>
+    <input type="text" id="Prénom" name="Prénom" placeholder="Prénom" required>
 
- <label for="Email">Adresse email :</label>
- <input type="email" id="Email" name="Email" placeholder="Adresse email" required>
+    <label for="Email">Adresse email :</label>
+    <input type="email" id="Email" name="Email" placeholder="Adresse email" required>
 
- <label for="Telephone">Téléphone :</label>
- <input type="tel" id="Telephone" name="Telephone" placeholder="Téléphone" required>
+    <label for="Telephone">Téléphone :</label>
+    <input type="tel" id="Telephone" name="Telephone" placeholder="Téléphone" required>
 
- <label for="CodePostal">Code postal :</label>
- <input type="text" id="CodePostal" name="CodePostal" placeholder="Votre code postal" required>
+    <label for="CodePostal">Code postal :</label>
+    <input type="text" id="CodePostal" name="CodePostal" placeholder="Votre code postal" required>
 
- <label for="Formation">Formation demandée :</label>
- <select name="Formation" id="Formation" required>
- <option value="">-- Sélectionnez une formation --</option>
- <option value="Permis B - Boîte manuelle 20h">Permis B - Boîte manuelle 20h</option>
- <option value="Permis B - Boîte manuelle 25h">Permis B - Boîte manuelle 25h</option>
- <option value="Permis B - Boîte automatique">Permis B - Boîte automatique</option>
- <option value="Permis B - Boîte automatique sans code">Permis B - Boîte automatique sans code</option>
- <option value="Permis B - Boîte manuelle sans code">Permis B - Boîte manuelle sans code</option>
- <option value="AAC - Boîte manuelle">AAC - Boîte manuelle</option>
- <option value="AAC - Boîte automatique">AAC - Boîte automatique</option>
- <option value="Formule théorique">Formule théorique</option>
- <option value="Formation passerelle (automatique -> manuelle)">Formation passerelle (automatique -> manuelle)</option>
- </select>
+    <label for="Formation">Formation demandée :</label>
+    <select name="Formation" id="Formation" required>
+      <option value="">-- Sélectionnez une formation --</option>
+      <option value="Permis B - Boîte manuelle 20h">Permis B - Boîte manuelle 20h</option>
+      <option value="Permis B - Boîte manuelle 25h">Permis B - Boîte manuelle 25h</option>
+      <option value="Permis B - Boîte automatique">Permis B - Boîte automatique</option>
+      <option value="Permis B - Boîte automatique sans code">Permis B - Boîte automatique sans code</option>
+      <option value="Permis B - Boîte manuelle sans code">Permis B - Boîte manuelle sans code</option>
+      <option value="AAC - Boîte manuelle">AAC - Boîte manuelle</option>
+      <option value="AAC - Boîte automatique">AAC - Boîte automatique</option>
+      <option value="Formule théorique">Formule théorique</option>
+      <option value="Formation passerelle (automatique -> manuelle)">Formation passerelle (automatique -> manuelle)</option>
+    </select>
 
- <label for="Objet">Informations supplémentaires :</label>
- <textarea id="Objet" name="Objet" rows="3" placeholder="Informations supplémentaires (si nécessaire)"></textarea>
+    <label for="Objet">Informations supplémentaires :</label>
+    <textarea id="Objet" name="Objet" rows="3" placeholder="Informations supplémentaires (si nécessaire)"></textarea>
 
- <button type="submit">Envoyer la demande</button>
+    <button type="submit">Envoyer la demande</button>
 
- </form>
+  </form>
 
- <p style="text-align:center; margin-top:20px; font-size:1em;">
- Nous vous recontacterons rapidement pour fixer un rendez-vous. Les rendez vous se font sur <a href="#horaires" style="color:#00bfff; text-decoration:underline;">les heures d'ouverture du bureau</a>, indiqué sur le site.
- </p>
+  <p style="text-align:center; margin-top:20px; font-size:1em;">
+    Nous vous recontacterons rapidement pour fixer un rendez-vous. Les rendez vous se font sur  <a href="#horaires" style="color:#00bfff; text-decoration:underline;">les heures d'ouverture du bureau</a>, indiqué sur le site.
+  </p>
  
 </section>
 <!-- FAQ collapsible -->
 <section id="faq">
- <h2>Questions fréquentes</h2>
+  <h2>Questions fréquentes</h2>
 <p style="text-align:center; margin-top:20px; font-size:1em;">
- Cliquez sur les questions pour voir les réponses 
- </p>
- <br>
- <button class="faq-question">1. À quel âge puis-je commencer la conduite accompagnée (AAC) ? </button>
- <div class="faq-answer">
- <p>La conduite accompagnée peut débuter dès 15 ans, après avoir validé le code de la route. Nous organisons la formation théorique et pratique adaptée à votre âge.</p>
- </div>
+    Cliquez sur les questions pour voir les réponses
+  </p>
+  <br>
+  <button class="faq-question">1. À quel âge puis-je commencer la conduite accompagnée (AAC) ? </button>
+  <div class="faq-answer">
+    <p>La conduite accompagnée peut débuter dès 15 ans, après avoir validé le code de la route. Nous organisons la formation théorique et pratique adaptée à votre âge.</p>
+  </div>
 
- <button class="faq-question">2. Combien de temps faut-il pour obtenir le permis B ?</button>
- <div class="faq-answer">
- <p>La durée varie selon votre progression et le forfait choisi : environ 20 à 25 heures de conduite pour la boîte manuelle et 13 heures pour la boîte automatique. La théorie doit être acquise sinon la pratique ne commencera pas.</p>
- </div>
+  <button class="faq-question">2. Combien de temps faut-il pour obtenir le permis B ?</button>
+  <div class="faq-answer">
+    <p>La durée varie selon votre progression et le forfait choisi : environ 20 à 25 heures de conduite pour la boîte manuelle et 13 heures pour la boîte automatique.</p>
+  </div>
 
- <button class="faq-question">3. Quels documents dois-je fournir pour m'inscrire ?</button>
- <div class="faq-answer">
- <p>Une pièce d'identité, un justificatif de domicile de moins de 3 mois, une photo d'identité récente et, le cas échéant, le livret de conduite accompagnée pour l'AAC.</p>
- </div>
+  <button class="faq-question">3. Quels documents dois-je fournir pour m'inscrire ?</button>
+  <div class="faq-answer">
+    <p>Un justificatif de domicile de moins de 3 mois, photocopie recto-verso de la carte d'identité, ASSR2, une photo d'identité AGRÉÉE ANTS avec code ephoto, photocopie recensement ou journée d'appel, justificatif de domicile de moins de 6 mois, photocopie d'identité recto-verso du responsable légal + attestation d'hébergement, 2 enveloppes timbrées à 50g (A5)</p>
+  </div>
 
- <button class="faq-question">4. Comment se déroule l'examen du code de la route ?</button>
- <div class="faq-answer">
- <p>L'examen du code comporte 40 questions à choix multiple. Il faut répondre correctement à au moins 35 questions pour réussir. Les questions portent sur la signalisation, les règles de circulation et la sécurité routière.</p>
- </div>
+  <button class="faq-question">4. Comment se déroule l'examen du code de la route ?</button>
+  <div class="faq-answer">
+    <p>L'examen du code comporte 40 questions à choix multiple. Il faut répondre correctement à au moins 35 questions pour réussir..</p>
+  </div>
 
- <button class="faq-question">5. Quels sont les principaux points à retenir pour réussir le code ?</button>
- <div class="faq-answer">
- <p>Apprenez la signalisation, les règles de priorité, les distances de sécurité, les limitations de vitesse et les comportements à adopter en cas d'urgence. La pratique sur des sessions de code dans notre salle spécialisée est très utile.</p>
- </div>
+  <button class="faq-question">5. Quels sont les principaux points à retenir pour réussir le code ?</button>
+  <div class="faq-answer">
+    <p>Utilisez les moyens mis à disposition par votre auto-école (le kit pédagogique ainsi que l'application numérique). La pratique dans notre salle spécialisée est très utile.</p>
+  </div>
 
- <button class="faq-question">6. Comment se passe l'examen pratique de conduite ?</button>
- <div class="faq-answer">
- <p>L'examen pratique dure environ 30 à 40 minutes et évalue votre maîtrise du véhicule, votre respect du code de la route et votre capacité à anticiper les dangers. L’examinateur vous accompagne sur différents types de routes.</p>
- </div>
+  <button class="faq-question">6. Comment se passe l'examen pratique de conduite ?</button>
+  <div class="faq-answer">
+    <p>L'examen pratique dure environ 30 à 40 minutes et évalue votre maîtrise du véhicule, votre respect du code de la route et votre capacité à anticiper les dangers. L’examinateur vous accompagne sur différents types de routes.</p>
+  </div>
 
- <button class="faq-question">7. Que faire en cas d'erreur pendant l'examen de conduite ?</button>
- <div class="faq-answer">
- <p>Restez calme, corrigez votre erreur si possible et poursuivez la conduite normalement. L'examinateur note chaque erreur, mais une seule erreur n'entraîne pas automatiquement l’échec.</p>
- </div>
+  <button class="faq-question">7. Que faire en cas d'erreur pendant l'examen de conduite ?</button>
+  <div class="faq-answer">
+    <p>Restez calme, corrigez votre erreur si possible et poursuivez la conduite normalement, une erreur n'entraîne pas automatiquement l’échec.</p>
+  </div>
 
- <button class="faq-question">8. Quels conseils pour bien progresser en conduite ?</button>
- <div class="faq-answer">
- <p>Pratiquez régulièrement, écoutez les conseils de votre moniteur, soyez attentif à la route et à vos réflexes. Notez vos erreurs et travaillez-les à chaque leçon.</p>
- </div>
+  <button class="faq-question">8. Quels conseils pour bien progresser en conduite ?</button>
+  <div class="faq-answer">
+    <p>Pratiquez régulièrement, écoutez les conseils de votre moniteur, soyez attentif à la route et à vos réflexes. Notez vos erreurs et travaillez-les à chaque leçon.</p>
+  </div>
 
- <button class="faq-question">9. Quels sont les risques les plus fréquents pour les nouveaux conducteurs ?</button>
- <div class="faq-answer">
- <p>Les erreurs courantes incluent la mauvaise estimation des distances, les excès de vitesse, les oublis de clignotants et le stress lors des changements de voie ou aux intersections. La pratique régulière réduit ces risques.</p>
- </div>
+  <button class="faq-question">9. Quels sont les risques les plus fréquents pour les nouveaux conducteurs ?</button>
+  <div class="faq-answer">
+    <p>Les erreurs courantes incluent la mauvaise estimation des distances et des vitesses, les excès de vitesse, les oublis de clignotants, le manque de prise d'informations avant un changement de voie et la prise d'informations aux intersections.</p>
+  </div>
 
- <button class="faq-question">10. Est-il possible de réviser le code en ligne avant les cours ?</button>
- <div class="faq-answer">
- <p>Oui, il existe une formule qui permet de faire des sessions afin de réviser le code de la route depuis chez soi grâce au Code Rousseau. Cela permet de se familiariser avec les questions et d’arriver mieux préparé aux cours pratiques et à l’examen.</p>
- </div>
+  <button class="faq-question">10. Est-il possible de réviser le code en ligne avant les cours ?</button>
+  <div class="faq-answer">
+    <p>Oui, il existe une formule qui permet de faire des sessions afin de réviser le code de la route depuis chez soi grâce au Code Rousseau. Cela permet de se familiariser avec les questions et d’arriver mieux preparé à l’examen.</p>
+  </div>
 
- <button class="faq-question">11. Comment savoir si je suis prêt pour l'examen du code de la route ?</button>
- <div class="faq-answer">
- <p>Procédez à votre auto-évaluation, et lorsque vous vous estimez prêt, vous pouvez solliciter une session dans le bureau de poste de votre choix, au plus proche de votre domicile.</p>
- </div>
+  <button class="faq-question">11. Comment savoir si je suis prêt pour l'examen du code de la route ?</button>
+  <div class="faq-answer">
+    <p>Procédez à votre auto-évaluation puis demander l'avis de votre formateur, et lorsque vous vous estimez prêt, vous pouvez solliciter une session dans le bureau de poste de votre choix, au plus proche de votre domicile.</p>
+  </div>
 
- <button class="faq-question">12. Que se passe-t-il si j’échoue à l'examen du code ou de la conduite ?</button>
- <div class="faq-answer">
- <p>Vous pouvez le repasser. Après un échec au code, vous pouvez vous réinscrire immédiatement pour le repasser. Pour l’examen pratique, il faudra généralement attendre quelques semaines et continuer la pratique avec votre moniteur. Si vous avez choisi la formule 25h, vous aurez le droit à un deuxième passage au permis, auquel cas il faudra repayer.</p>
- </div>
+  <button class="faq-question">12. Que se passe-t-il si j’échoue à l'examen du code ou de la conduite ?</button>
+  <div class="faq-answer">
+    <p>Vous pouvez le repasser. Après un échec au code, vous pouvez vous réinscrire. Pour l’examen pratique, parlez-en avec votre formateur.</p>
+  </div>
 
- <button class="faq-question">13. Quels conseils pour gérer le stress le jour de l'examen ?</button>
- <div class="faq-answer">
- <p>Respirez profondément, restez concentré sur votre conduite, écoutez attentivement l’examinateur et rappelez-vous que vous êtes préparé. Une bonne nuit de sommeil et un petit déjeuner équilibré aident aussi à être détendu.</p>
- </div>
- <button class="faq-question">14. Quelle est la différence entre la boîte manuelle et la boîte automatique ?</button>
- <div class="faq-answer">
- <p>La boîte manuelle nécessite de gérer l’embrayage et le passage des vitesses, tandis que la boîte automatique simplifie la conduite en supprimant ces actions. Elle est idéale pour les élèves stressés ou souhaitant un apprentissage plus rapide.</p>
- </div>
- <button class="faq-question">15. Puis-je passer du permis automatique (B78) au permis boîte manuelle ?</button>
- <div class="faq-answer">
- <p>Oui. Après l’obtention du permis automatique, une formation complémentaire de 7 heures que l'on appelle une passerelle permet de conduire une boîte manuelle, sans repasser l’examen.</p>
- </div>
- <button class="faq-question">16. Proposez-vous la conduite supervisée après un échec à l’examen ?</button>
- <div class="faq-answer">
- <p>Oui. La conduite supervisée est une excellente solution pour continuer à s’entraîner, gagner en confiance et améliorer ses chances de réussite lors du prochain passage.</p>
- </div>
- <button class="faq-question">17. Est-il possible de faire un réentraînement après une longue période sans conduire ?</button>
- <div class="faq-answer">
- <p>Absolument. Le réentraînement permet de reprendre la conduite en douceur, de corriger les mauvaises habitudes et de retrouver assurance et sécurité au volant.</p>
- </div>
- <button class="faq-question">18. La conduite accompagnée permet-elle d’augmenter les chances de réussite au permis ?</button>
- <div class="faq-answer">
- <p>Oui. Les statistiques montrent que la conduite accompagnée améliore le taux de réussite à l’examen et permet une meilleure maîtrise de la conduite sur le long terme.</p>
- </div>
- <button class="faq-question">19. Combien d’heures de conduite sont obligatoires pour passer l’examen ?</button>
- <div class="faq-answer">
- <p>Le minimum légal est de 20 heures en boîte manuelle et 13 heures en boîte automatique. Toutefois, le nombre d’heures dépend du rythme et de la progression de chaque élève.</p>
- </div>
- <button class="faq-question">20. À quelle fréquence puis-je prendre des leçons de conduite ?</button>
- <div class="faq-answer">
- <p>Les leçons peuvent être planifiées selon vos disponibilités, avec une fréquence régulière pour assurer une progression efficace.</p>
- </div>
- <button class="faq-question">21. Quels sont les moyens de paiement acceptés ?</button>
- <div class="faq-answer">
- <p>Nous acceptons plusieurs moyens de paiement et proposons des facilités afin de rendre la formation accessible au plus grand nombre.</p>
- </div>
- <button class="faq-question">22. Le permis à 1 € par jour est-il accessible à tous ?</button>
- <div class="faq-answer">
- <p>Il est destiné aux jeunes de 15 à 25 ans sous conditions d’éligibilité. Nous vous accompagnons dans les démarches si vous êtes concerné.</p>
- </div>
- <button class="faq-question">23. L’auto-école s’occupe-t-elle des démarches administratives ANTS ?</button>
- <div class="faq-answer">
- <p>Oui. Nous prenons en charge l’ensemble des démarches administratives pour vous simplifier la vie.</p>
- </div>
- <button class="faq-question">24. Combien de temps le code est-il valable ?</button>
- <div class="faq-answer">
- <p>Le code de la route est valable 5 ans à compter de sa réussite.</p>
- </div>
- <button class="faq-question">25. Puis-je transférer mon dossier depuis une autre auto-école ?</button>
- <div class="faq-answer">
- <p>Oui. Le transfert de dossier est possible et nous vous accompagnons dans cette démarche.</p>
- </div>
- <button class="faq-question">26. Aidez-vous les élèves stressés ou en manque de confiance ?</button>
- <div class="faq-answer">
- <p>Oui. Nous adaptons notre pédagogie à chaque élève, avec patience, écoute et bienveillance.</p>
- </div>
- <button class="faq-question">27. Que faire si j’ai peur de conduire ?</button>
- <div class="faq-answer">
- <p>La peur est fréquente. Grâce à un accompagnement progressif et personnalisé, nous vous aidons à reprendre confiance étape par étape.</p>
- </div>
- <button class="faq-question">28. Quel est votre taux de réussite au permis ?</button>
- <div class="faq-answer">
- <p>Notre taux de réussite est satisfaisant et reflète la qualité de notre accompagnement et l’implication de nos élèves.</p>
- </div>
- <button class="faq-question">29. Pourquoi choisir votre auto-école plutôt qu’une autre ?</button>
- <div class="faq-answer">
- <p>Pour notre pédagogie personnalisée, notre écoute, notre sérieux et notre objectif principal : votre réussite et votre sécurité sur la route.</p>
- </div>
+  <button class="faq-question">13. Quels conseils pour gérer le stress le jour de l'examen ?</button>
+  <div class="faq-answer">
+    <p>Respirez profondément, restez concentré sur votre conduite, écoutez attentivement l’examinateur et rappelez-vous que vous êtes préparé. Une bonne nuit de sommeil et un repas équilibré aide aussi à se détendre.</p>
+  </div>
+  <button class="faq-question">14. Quelle est la différence entre la boîte manuelle et la boîte automatique ?</button>
+  <div class="faq-answer">
+    <p>La boîte manuelle nécessite de gérer l’embrayage et le passage des vitesses, tandis que la boîte automatique simplifie la conduite en supprimant ces actions. Elle est idéale pour les élèves stressés ou souhaitant un apprentissage plus rapide.</p>
+  </div>
+   <button class="faq-question">15. Puis-je passer du permis automatique (B78) au permis boîte manuelle ?</button>
+  <div class="faq-answer">
+    <p>Oui. Après l’obtention du permis automatique et après une évaluation, une formation complémentaire de minimum 7 heures que l'on appelle passerelle, permet de conduire une boîte manuelle, sans repasser l’examen.</p>
+  </div>
+   <button class="faq-question">16. Proposez-vous la conduite supervisée après un échec à l’examen ?</button>
+  <div class="faq-answer">
+    <p>Oui. La conduite supervisée est une excellente solution pour continuer à s’entraîner, gagner en confiance et améliorer ses chances de réussite lors du prochain passage.</p>
+  </div>
+   <button class="faq-question">17. Est-il possible de faire un réentraînement après une longue période sans conduire ?</button>
+  <div class="faq-answer">
+    <p>Absolument. Le réentraînement permet de reprendre la conduite en douceur, de corriger les mauvaises habitudes et de retrouver assurance et sécurité au volant.</p>
+  </div>
+   <button class="faq-question">18. La conduite accompagnée permet-elle d’augmenter les chances de réussite au permis ?</button>
+  <div class="faq-answer">
+    <p>Oui. Les statistiques montrent que la conduite accompagnée améliore le taux de réussite à l’examen et permet une meilleure maîtrise de la conduite sur le long terme.</p>
+  </div>
+   <button class="faq-question">19. Combien d’heures de conduite sont obligatoires pour passer l’examen ?</button>
+  <div class="faq-answer">
+    <p>Le minimum légal est de 20 heures en boîte manuelle et 13 heures en boîte automatique. Toutefois, le nombre d’heures dépend de chaque élève.</p>
+  </div>
+  <button class="faq-question">20. À quelle fréquence puis-je prendre des leçons de conduite ?</button>
+  <div class="faq-answer">
+    <p>Les leçons peuvent être planifiées selon vos disponibilités, avec une fréquence régulière pour assurer une progression efficace.</p>
+  </div>
+  <button class="faq-question">21. Quels sont les moyens de paiement acceptés ?</button>
+  <div class="faq-answer">
+    <p>Nous acceptons plusieurs moyens de paiement et proposons des facilités afin de rendre la formation accessible au plus grand nombre.</p>
+  </div>
+  <button class="faq-question">22. Le permis à 1 € par jour est-il accessible à tous ?</button>
+  <div class="faq-answer">
+    <p>Il est destiné aux jeunes de 15 à 25 ans sous conditions d’éligibilité. Nous vous accompagnons dans les démarches si vous êtes concerné.</p>
+  </div>
+  <button class="faq-question">23. L’auto-école s’occupe-t-elle des démarches administratives ANTS ?</button>
+  <div class="faq-answer">
+    <p>Oui. Nous prenons en charge l’ensemble des démarches administratives pour vous simplifier la vie.</p>
+  </div>
+  <button class="faq-question">24. Combien de temps le code est-il valable ?</button>
+  <div class="faq-answer">
+    <p>Le code de la route est valable 5 ans à compter de sa réussite.</p>
+  </div>
+   <button class="faq-question">25. Aidez-vous les élèves stressés ou en manque de confiance ?</button>
+  <div class="faq-answer">
+    <p>Oui. Nous adaptons notre pédagogie à chaque élève, avec patience, écoute et bienveillance.</p>
+  </div>
+   <button class="faq-question">26. Que faire si j’ai peur de conduire ?</button>
+  <div class="faq-answer">
+    <p>La peur est fréquente. Grâce à un accompagnement progressif et personnalisé, nous vous aidons à reprendre confiance étape par étape.</p>
+  </div>
+   <button class="faq-question">27. Quel est votre taux de réussite au permis ?</button>
+  <div class="faq-answer">
+    <p>Notre taux de réussite est satisfaisant et reflète la qualité de notre accompagnement et l’implication de nos élèves.</p>
+  </div>
+   <button class="faq-question">28. Pourquoi choisir votre auto-école plutôt qu’une autre ?</button>
+  <div class="faq-answer">
+    <p>Pour notre pédagogie personnalisée, notre écoute, notre sérieux et notre objectif principal : votre réussite et votre sécurité sur la route.</p>
+  </div>
 
 </section>
 </main>
 
 <footer>
- <p>&copy; 2026 Auto-École de Longueau</p>
+  <p>&copy; 2026 Auto-École de Longueau</p>
 </footer>
 
 <button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'});">↑</button>
 
 <script>
 document.querySelectorAll('a[href^="#"]').forEach(link => {
- link.addEventListener('click', function(e) {
- const targetId = this.getAttribute('href').substring(1);
- const target = document.getElementById(targetId);
- if(target){
- e.preventDefault(); // empêche le scroll par défaut
- const menuHeight = document.getElementById('menu-bandeau').offsetHeight;
- const targetPos = target.getBoundingClientRect().top + window.scrollY - menuHeight;
- window.scrollTo({ top: targetPos, behavior: 'smooth' });
- }
+  link.addEventListener('click', function(e) {
+    const targetId = this.getAttribute('href').substring(1);
+    const target = document.getElementById(targetId);
+    if(target){
+      e.preventDefault(); // empêche le scroll par défaut
+      const menuHeight = document.getElementById('menu-bandeau').offsetHeight;
+      const targetPos = target.getBoundingClientRect().top + window.scrollY - menuHeight;
+      window.scrollTo({ top: targetPos, behavior: 'smooth' });
+    }
 
- // Fermer le menu mobile si ouvert
- const menu = document.getElementById('menu-bandeau');
- if(window.innerWidth <= 768 && menu.classList.contains('active')){
- menu.classList.remove('active');
- }
- });
+    // Fermer le menu mobile si ouvert
+    const menu = document.getElementById('menu-bandeau');
+    if(window.innerWidth <= 768 && menu.classList.contains('active')){
+      menu.classList.remove('active');
+    }
+  });
 });
 </script>
 <script>
- const questions = document.querySelectorAll('.faq-question');
- questions.forEach(q => {
- q.addEventListener('click', () => {
- const answer = q.nextElementSibling;
- const isOpen = answer.style.display === 'block';
- // Fermer toutes les réponses
- document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
- // Ouvrir la réponse cliquée si elle n'était pas ouverte
- if (!isOpen) answer.style.display = 'block';
- });
- });
+  const questions = document.querySelectorAll('.faq-question');
+  questions.forEach(q => {
+    q.addEventListener('click', () => {
+      const answer = q.nextElementSibling;
+      const isOpen = answer.style.display === 'block';
+      // Fermer toutes les réponses
+      document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
+      // Ouvrir la réponse cliquée si elle n'était pas ouverte
+      if (!isOpen) answer.style.display = 'block';
+    });
+  });
 </script>
 <script>
- const backToTop = document.getElementById('backToTop');
+  const backToTop = document.getElementById('backToTop');
 
- // Écoute le scroll
- window.addEventListener('scroll', () => {
- if (window.scrollY > 300) { // si on a descendu 300px
- backToTop.style.display = 'block';
- } else {
- backToTop.style.display = 'none';
- }
- });
-</script>
-
-<script>
- const sections = document.querySelectorAll("section");
-
- const revealOnScroll = () => {
- const triggerBottom = window.innerHeight * 0.85;
-
- sections.forEach(section => {
- const sectionTop = section.getBoundingClientRect().top;
- if (sectionTop < triggerBottom) {
- section.classList.add("visible");
- }
- });
- };
-
- window.addEventListener("scroll", revealOnScroll);
- window.addEventListener("load", revealOnScroll);
+  // Écoute le scroll
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) { // si on a descendu 300px
+      backToTop.style.display = 'block';
+    } else {
+      backToTop.style.display = 'none';
+    }
+  });
 </script>
 </body>
 </html>
-
-
-
