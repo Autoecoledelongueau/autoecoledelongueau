@@ -4,37 +4,132 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="GnB-KZuUOlca6yC..." />
-  <title>Auto-École de Longueau | Permis B, AAC, Boîte auto,manuelle</title>
-
-  <!-- FAVICON -->
+  <title>Auto-École de Longueau | Permis B, AAC, Boîte auto, manuelle</title>
   <link rel="icon" href="favicon.jpg" type="image/png">
+  <script src="https://kit.fontawesome.com/0b1c9b6f5f.js" crossorigin="anonymous"></script>
+
+  <!-- ===== FIREBASE SDK ===== -->
+  <!-- 🔧 CONFIGURATION FIREBASE — Remplacez ces valeurs par celles de votre projet Firebase -->
+  <!-- 1. Allez sur https://console.firebase.google.com -->
+  <!-- 2. Créez un projet → Ajoutez une application Web -->
+  <!-- 3. Copiez votre firebaseConfig ici -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    // 🔧 REMPLACEZ CES VALEURS PAR VOTRE CONFIG FIREBASE
+    const firebaseConfig = {
+      apiKey:            "AIzaSyBwV_1ad9gBf-9z_Cgjkby2aBixglT4kQA",
+      authDomain:        "autoecolelongueau.firebaseapp.com",
+      databaseURL:       "https://VOTRE_PROJECT-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId:         "autoecolelongueau",
+      storageBucket:     "autoecolelongueau.firebasestorage.app",
+      messagingSenderId: "134036463972",
+      appId:             "1:134036463972:web:bf731c4da8903315a51a71"
+    };
+
+    // Initialisation Firebase (désactivée si config non renseignée)
+    let db = null;
+    let firebaseReady = false;
+
+    try {
+      if (firebaseConfig.apiKey !== "VOTRE_API_KEY") {
+        const app = initializeApp(firebaseConfig);
+        db = getDatabase(app);
+        firebaseReady = true;
+        console.log("✅ Firebase connecté");
+      } else {
+        console.warn("⚠️ Firebase non configuré — mode local uniquement");
+      }
+    } catch(e) {
+      console.error("❌ Erreur Firebase :", e);
+    }
+
+    // Expose sur window pour l'utiliser dans le script principal
+    window._firebase = { db, ref, set, get, onValue, ready: firebaseReady };
+  </script>
 
   <style>
-    html {
-  scroll-behavior: smooth;
-}
-    /* RESET */
+    /* ===== RESET ===== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: Arial, sans-serif;
       background: #ffffff;
       color: #000;
       line-height: 1.6;
+      padding-top: 58px;
     }
 
+    /* ===== MENU FIXE ===== */
+    #menu-bandeau {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      background-color: #000000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      padding: 12px 20px;
+      z-index: 1000;
+    }
+    #menu-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    #menu-bandeau a {
+      color: #00bfff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background 0.2s, color 0.2s;
+    }
+    #menu-bandeau a:hover { background: #00bfff; color: #111; }
+
+    /* Bouton admin dans le menu */
+    #admin-login-btn {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: none;
+      border: 2px solid #00bfff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #00bfff;
+      font-size: 18px;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      position: relative;
+      margin-left: 12px;
+    }
+    #admin-login-btn:hover { background: #00bfff; color: #000; }
+    #admin-login-btn.logged-in { background: #00bfff; color: #000; }
+    .admin-badge {
+      position: absolute;
+      top: -3px; right: -3px;
+      width: 11px; height: 11px;
+      background: #22cc55;
+      border-radius: 50%;
+      border: 2px solid #000;
+      display: none;
+    }
+    #admin-login-btn.logged-in .admin-badge { display: block; }
+
+    /* ===== HEADER IMAGE ===== */
     .header-image img { width: 100%; height: auto; display: block; }
 
+    /* ===== MAIN ===== */
     main { max-width: 1200px; margin: auto; padding: 30px 20px; }
-
-    section {
-      margin-bottom: 50px;
-      padding: 15px;
-      opacity: 1;
-      transform: translateY(40px);
-      transition: all 1s ease;
-    }
-
+    section { margin-bottom: 50px; padding: 15px; }
     h2 {
       margin-bottom: 25px;
       text-align: left;
@@ -43,44 +138,10 @@
       padding-bottom: 5px;
       font-size: 1.8em;
     }
-
     ul { list-style: none; }
-
     li { margin-bottom: 12px; }
 
-    footer {
-      background: #111;
-      color: #ffffff;
-      text-align: center;
-      padding: 20px 0;
-    }
-
-    /* CADRES TARIFS */
-    .cadre-tarifs, .forfaits-ajout {
-      background: #ffffff;
-      border: 2px solid #00bfff;
-      padding: 20px;
-      margin-bottom: 30px;
-    }
-
-    .cadre-tarifs h3, .forfaits-ajout h3 { text-align: left; margin-bottom: 15px; }
-    .cadre-tarifs ul, .forfaits-ajout ul { padding-left: 25px; }
-
-    /* BOUTON HAUT */
-    #backToTop {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #00bfff;
-      color: #ffffff;
-      border: none;
-      padding: 12px 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      display: none;
-    }
-
-    /* LOGOS + LABEL + AFFILIATION côte à côte */
+    /* ===== LOGOS ===== */
     .logos-affiliation {
       display: flex;
       justify-content: center;
@@ -89,283 +150,497 @@
       margin-top: 30px;
       flex-wrap: wrap;
     }
+    .logos-affiliation img { width: 250px; max-width: 100%; height: auto; }
 
-    .logos-affiliation img {
-      width: 250px;
-      max-width: 100%;
-      height: auto;
+    /* ===== HORAIRES ===== */
+    #horaires ul { text-align: center; }
+
+    /* ===== CADRES TARIFS ===== */
+    .cadre-tarifs, .forfaits-ajout {
+      background: #ffffff;
+      border: 2px solid #00bfff;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .cadre-tarifs h3, .forfaits-ajout h3 { text-align: left; margin-bottom: 15px; }
+    .cadre-tarifs ul, .forfaits-ajout ul { padding-left: 25px; list-style: disc; }
+    .cadre-tarifs li, .forfaits-ajout li { margin-bottom: 10px; }
+
+    /* ===== VÉHICULES ===== */
+    .vehicules { display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; margin-top: 30px; }
+    .vehicule { text-align: center; max-width: 250px; }
+    .vehicule img { width: 100%; height: auto; border-radius: 10px; }
+
+    /* ===== ÉQUIPE ===== */
+    .equipe { display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; margin-top: 30px; }
+    .membre { text-align: center; max-width: 250px; }
+    .membre img { width: 100%; height: auto; border-radius: 10px; }
+
+    /* ===== SÉPARATEUR ===== */
+    .separator hr { border: 0; height: 3px; background-color: #00bfff; width: 80%; margin: 30px auto 0 auto; }
+    .separator p { max-width: 800px; margin: 15px auto 0 auto; font-size: 1em; line-height: 1.6; text-align: center; }
+
+    /* ===== AVIS ===== */
+    #avis ul { list-style-type: disc; padding-left: 25px; }
+    #avis li p { margin: 10px 0; font-size: 1em; line-height: 1.6; text-align: left; }
+
+    /* ===== FORMULAIRE RDV ===== */
+    .form-rdv { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
+    .form-rdv label { font-size: 20px; font-weight: bold; }
+    .form-rdv input, .form-rdv select, .form-rdv textarea {
+      width: 100%; padding: 16px; font-size: 18px;
+      border: 1px solid #ccc; border-radius: 5px;
+    }
+    .form-rdv button {
+      padding: 18px; font-size: 20px; background: #00bfff; color: #fff;
+      border: none; border-radius: 5px; cursor: pointer;
+    }
+    .form-rdv button:hover { background: #0097d6; }
+
+    /* ===== FAQ ===== */
+    .faq-question {
+      width: 100%; background-color: #fff; color: #111; cursor: pointer;
+      padding: 15px 20px; border: 2px solid #00bfff; text-align: left;
+      outline: none; font-size: 18px; font-weight: bold; margin-bottom: 10px;
+      border-radius: 5px; transition: background 0.3s, border-color 0.3s;
+    }
+    .faq-question:hover { background-color: #f0f8ff; border-color: #0097d6; }
+    .faq-answer { display: none; padding: 15px 20px; background-color: #f1f1f1; margin-bottom: 10px; border-radius: 5px; }
+    .faq-answer p { margin: 0; }
+
+    /* ===== ANCRES OFFSET ===== */
+    .anchor-offset { display: block; position: relative; top: -60px; visibility: hidden; }
+
+    /* ===== FOOTER ===== */
+    footer { background: #111; color: #ffffff; text-align: center; padding: 20px 0; }
+
+    /* ===== BACK TO TOP ===== */
+    #backToTop {
+      position: fixed; bottom: 30px; right: 30px;
+      background: #00bfff; color: #ffffff; border: none;
+      padding: 12px 16px; border-radius: 5px; cursor: pointer;
+      display: none; font-size: 18px; z-index: 500;
     }
 
-    /* L'équipe flex côte à côte */
-    .equipe {
-      display: flex;
-      justify-content: center;
-      gap: 50px;
-      flex-wrap: wrap;
-      margin-top: 30px;
+    /* ===== MODAL CONNEXION ADMIN ===== */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      z-index: 9000; display: none; align-items: center; justify-content: center;
     }
-
-    .membre {
-      text-align: center;
-      max-width: 250px;
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #fff; border: 3px solid #00bfff; border-radius: 10px;
+      padding: 36px 40px; width: 90%; max-width: 420px; position: relative;
     }
-
-    .membre img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
+    .modal-close { position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 22px; color: #888; cursor: pointer; }
+    .modal-close:hover { color: #000; }
+    .modal-title { font-size: 1.5rem; font-weight: bold; color: #000; margin-bottom: 4px; border-bottom: 2px solid #00bfff; display: inline-block; padding-bottom: 4px; }
+    .modal-subtitle { font-size: 14px; color: #888; margin: 10px 0 24px; }
+    .modal-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .modal-field label { font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; color: #444; }
+    .modal-field input { font-size: 15px; padding: 10px 12px; border: 2px solid #ccc; border-radius: 5px; outline: none; transition: border-color 0.2s; }
+    .modal-field input:focus { border-color: #00bfff; }
+    .modal-error { background: #fff0f0; color: #cc2200; border: 2px solid #f5c6c2; border-radius: 5px; padding: 10px 14px; font-size: 14px; margin-bottom: 14px; display: none; }
+    .modal-error.show { display: block; }
+    .btn-login {
+      width: 100%; padding: 14px; background: #00bfff; color: #fff; font-weight: bold;
+      font-size: 16px; letter-spacing: 0.04em; text-transform: uppercase;
+      border: none; border-radius: 5px; cursor: pointer; transition: background 0.2s; margin-top: 4px;
     }
+    .btn-login:hover { background: #0097d6; }
 
+    /* ===== PANNEAU ADMIN ===== */
+#admin-panel { display: none; position: fixed; inset: 0; z-index: 8000; background: #f5f5f5; overflow-y: auto; }
+#admin-panel.open { display: block; }
+
+.admin-topbar {
+  background: #000; border-bottom: 4px solid #00bfff; color: #fff;
+  padding: 0 28px; height: 70px; display: flex; align-items: center;
+  justify-content: space-between; position: sticky; top: 0; z-index: 10;
+}
+.admin-topbar-title { font-size: 1.2rem; font-weight: bold; color: #00bfff; }
+.admin-topbar-title span { color: #fff; font-weight: normal; }
+.btn-logout {
+  background: none; color: #00bfff; border: 2px solid #00bfff; border-radius: 8px;
+  padding: 12px 20px; font-size: 15px; font-weight: bold; cursor: pointer;
+  transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+}
+.btn-logout:hover { background: #00bfff; color: #000; }
+.btn-back-site {
+  background: rgba(0,191,255,0.15); color: #00bfff; border: 2px solid #00bfff;
+  border-radius: 8px; padding: 12px 20px; font-size: 15px; font-weight: bold;
+  cursor: pointer; transition: all 0.2s; margin-right: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-back-site:hover { background: #00bfff; color: #000; }
+
+.admin-body { max-width: 1000px; margin: 0 auto; padding: 30px 24px; }
+
+.admin-welcome {
+  background: #fff; border: 3px solid #00bfff; border-radius: 10px;
+  padding: 28px 32px; margin-bottom: 28px;
+}
+.admin-welcome h2 { font-size: 1.4rem; font-weight: bold; color: #000; margin-bottom: 6px; border: none; padding: 0; display: block; }
+.admin-welcome p { font-size: 16px; color: #444; line-height: 1.6; }
+
+/* Indicateur Firebase */
+#firebase-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; padding: 5px 12px; border-radius: 20px;
+  margin-top: 10px; font-weight: bold;
+}
+#firebase-status.connected { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+#firebase-status.offline { background: #fff8e1; color: #f57f17; border: 1px solid #ffe082; }
+.firebase-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.firebase-dot.connected { background: #22cc55; }
+.firebase-dot.offline { background: #f0a500; }
+
+/* ONGLETS ADMIN */
+.admin-tabs { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+.admin-tab-btn {
+  padding: 14px 22px; background: #fff; border: 3px solid #ccc; border-radius: 10px;
+  font-size: 16px; font-weight: bold; color: #444; cursor: pointer;
+  transition: all 0.15s; display: flex; align-items: center; gap: 10px;
+  min-width: 130px; justify-content: center;
+}
+.admin-tab-btn:hover { border-color: #00bfff; color: #00bfff; background: #e0f7ff; }
+.admin-tab-btn.active { border-color: #00bfff; color: #000; background: #00bfff; font-size: 16px; }
+
+.admin-section { display: none; }
+.admin-section.active { display: block; }
+
+/* CARD ADMIN */
+.admin-card { background: #fff; border: 3px solid #00bfff; border-radius: 10px; padding: 32px; margin-bottom: 20px; }
+.admin-card-title { font-size: 1.3rem; font-weight: bold; color: #000; margin-bottom: 6px; display: flex; align-items: center; gap: 12px; }
+.admin-card-desc { font-size: 15px; color: #555; margin-bottom: 24px; background: #e8f7ff; padding: 12px 16px; border-radius: 6px; border-left: 4px solid #00bfff; line-height: 1.6; }
+
+/* CHAMPS ADMIN */
+.admin-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.admin-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.admin-field label { font-size: 15px; font-weight: bold; color: #222; display: flex; align-items: center; gap: 8px; }
+.admin-field input, .admin-field select, .admin-field textarea {
+  font-size: 16px; padding: 14px 16px; border: 2px solid #ccc; border-radius: 8px;
+  outline: none; color: #000; background: #fff; width: 100%; transition: border-color 0.2s;
+}
+.admin-field input:focus, .admin-field select:focus, .admin-field textarea:focus { border-color: #00bfff; box-shadow: 0 0 0 3px rgba(0,191,255,0.15); }
+.admin-field textarea { resize: vertical; min-height: 90px; }
+
+/* Champ mot de passe avec toggle */
+.pw-wrap { position: relative; }
+.pw-wrap input { padding-right: 48px; }
+.pw-toggle {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer; color: #888; font-size: 18px; padding: 0;
+}
+.pw-toggle:hover { color: #00bfff; }
+
+.hash-info { font-size: 13px; color: #888; display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+
+/* HORAIRES ADMIN */
+.horaire-admin-row {
+  display: grid; grid-template-columns: 140px 130px 1fr; gap: 12px;
+  align-items: center; background: #f8f8f8; border: 2px solid #ddd;
+  border-radius: 8px; padding: 16px 20px; margin-bottom: 10px;
+}
+.horaire-admin-day { font-size: 17px; font-weight: bold; color: #000; }
+.admin-toggle { display: flex; align-items: center; gap: 10px; font-size: 16px; color: #444; cursor: pointer; }
+.admin-toggle input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: #00bfff; }
+
+/* TARIFS ADMIN */
+.tarif-admin-row {
+  display: grid; grid-template-columns: 1fr 100px auto; gap: 12px;
+  align-items: start; background: #f8f8f8; border: 2px solid #ddd;
+  border-radius: 8px; padding: 16px 20px; margin-bottom: 12px;
+}
+
+/* FAQ ADMIN */
+.faq-admin-item { background: #f8f8f8; border: 2px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 12px; }
+.faq-admin-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+/* BOUTONS ADMIN */
+.btn-save {
+  background: #00bfff; color: #fff; font-size: 17px; font-weight: bold;
+  padding: 16px 32px; border: none; border-radius: 8px; cursor: pointer;
+  transition: background 0.2s; display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-save:hover { background: #0097d6; }
+.btn-add {
+  background: #fff; color: #00bfff; font-size: 16px; font-weight: bold;
+  padding: 14px 20px; border: 3px dashed #00bfff; border-radius: 8px;
+  cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center;
+  gap: 10px; width: 100%; justify-content: center; margin-top: 6px;
+}
+.btn-add:hover { background: #e0f7ff; }
+.btn-del {
+  background: #fff0f0; color: #cc2200; border: 2px solid #f5c6c2;
+  border-radius: 8px; padding: 10px 16px; cursor: pointer; font-size: 15px;
+  font-weight: bold; transition: background 0.2s; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-del:hover { background: #fad8d4; }
+
+/* Séparateur section */
+.admin-section-divider {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; font-weight: bold; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #888; margin: 24px 0 14px;
+}
+.admin-section-divider::before, .admin-section-divider::after { content: ''; flex: 1; height: 2px; background: #ddd; }
+
+    /* TOAST */
+    #toast {
+      position: fixed; bottom: 24px; right: 24px; background: #000;
+      color: #fff; border: 2px solid #00bfff; padding: 12px 20px;
+      border-radius: 5px; font-size: 14px; font-weight: bold;
+      z-index: 99999; display: flex; align-items: center; gap: 8px;
+      transform: translateY(60px); opacity: 0; transition: all 0.3s; pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast i { color: #00bfff; }
+    #toast.error { border-color: #cc2200; }
+    #toast.error i { color: #cc2200; }
+
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 600px) {
-      .logos-affiliation img, .membre img { width: 100%; margin-bottom: 15px; }
+      body { padding-top: 0; }
+      #menu-bandeau { display: none; }
+      .logos-affiliation img { width: 100%; margin-bottom: 15px; }
+      .membre img, .vehicule img { width: 100%; margin-bottom: 15px; }
+      .form-rdv label { font-size: 18px; }
+      .form-rdv input, .form-rdv select, .form-rdv textarea { font-size: 16px; padding: 14px; }
+      .form-rdv button { font-size: 18px; padding: 16px; }
+      .admin-form-row { grid-template-columns: 1fr; }
+      .horaire-admin-row { grid-template-columns: 110px 1fr; row-gap: 8px; }
+      .horaire-admin-row .time-fields { grid-column: 1/-1; }
+      .tarif-admin-row { grid-template-columns: 1fr auto auto; }
+      .admin-tabs { gap: 4px; }
+      .admin-tab-btn { padding: 10px 12px; font-size: 12px; }
+      .modal-box { padding: 24px 20px; }
     }
-
-    /* SEPARATEUR BLEU */
-    .separator hr {
-      border: 0;
-      height: 3px;
-      background-color: #00bfff;
-      width: 80%;
-      margin: 30px auto 0 auto;
-    }
-
-    .separator p {
-      max-width: 800px;
-      margin: 15px auto 0 auto;
-      font-size: 1em;
-      line-height: 1.6;
-      text-align: center;
-    }
-
-    /* SECTION AVIS */
-    #avis h2 {
-      border-bottom: 2px solid #00bfff;
-      display: inline-block;
-      padding-bottom: 5px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    #avis ul {
-      list-style-type: disc;
-      padding-left: 25px;
-    }
-
-    #avis li p {
-      margin: 10px 0;
-      font-size: 1em;
-      line-height: 1.6;
-      text-align: left;
-    }
-
-      /* FORMULAIRE PRISE DE RENDEZ-VOUS */
-.form-rdv {
-  max-width: 600px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.form-rdv label {
-  font-size: 20px;       /* Taille des labels */
-  font-weight: bold;
-}
-
-.form-rdv input,
-.form-rdv select,
-.form-rdv textarea {
-  width: 100%;
-  padding: 16px;
-  font-size: 18px;       /* Taille du texte dans les champs */
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.form-rdv button {
-  padding: 18px;
-  font-size: 20px;
-  background: #00bfff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.form-rdv button:hover {
-  background: #0097d6;
-}
-
-@media (max-width: 600px) {
-  .form-rdv label {
-    font-size: 18px;
-  }
-
-  .form-rdv input,
-  .form-rdv select,
-  .form-rdv textarea {
-    font-size: 16px;
-    padding: 14px;
-  }
-
-  .form-rdv button {
-    font-size: 18px;
-    padding: 16px;
-  }
-}
-
-
-#menu-bandeau a:hover {
-  background: #00bfff;
-  color: #ffffff;
-  border-radius: 5px;
-}
-/* Menu fixe en haut */
-#menu-bandeau {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #000000; /* bandeau noir */
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 12px 0;
-  z-index: 1000;
-}
-
-#menu-bandeau a {
-  color: #00bfff; /* texte bleu */
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 15px;
-  padding: 5px 10px;
-}
-
-#menu-bandeau a:hover {
-  background: #00bfff;
-  color: #111;
-  border-radius: 5px;
-}
-/* Décalage du contenu sous le menu fixe */
-body {
-  padding-top: 58px; /* hauteur du menu sur PC */
-}
-
-@media (max-width: 600px) {
-  #menu-bandeau {
-    display: none; /* cacher le menu fixe sur mobile */
-  }
-}
-@media (max-width: 600px) {
-  body {
-    padding-top: 0; /* enlève le décalage du menu sur mobile */
-  }
-}
-/* VÉHICULES FLEX CÔTÉ À CÔTÉ, CENTRÉS */
-.vehicules {
-  display: flex;
-  justify-content: center;
-  gap: 50px;
-  flex-wrap: wrap;
-  margin-top: 30px;
-}
-
-.vehicule {
-  text-align: center;
-  max-width: 250px;
-}
-
-.vehicule img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-
-/* MOBILE */
-@media (max-width: 600px) {
-  .vehicule img {
-    width: 100%;
-    margin-bottom: 15px;
-  }
-}
-/* FAQ */
-.faq-question {
-  width: 100%;
-  background-color: #fff;           /* fond blanc */
-  color: #111;                      /* texte noir */
-  cursor: pointer;
-  padding: 15px 20px;
-  border: 2px solid #00bfff;       /* bordure bleue */
-  text-align: left;
-  outline: none;
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  transition: background 0.3s, border-color 0.3s;
-}
-
-.faq-question:hover {
-  background-color: #f0f8ff;        /* léger bleu clair au survol */
-  border-color: #0097d6;            /* bordure un peu plus foncée au survol */
-}
-
-.faq-answer {
-  display: none;
-  padding: 15px 20px;
-  background-color: #f1f1f1;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-
-.faq-answer p {
-  margin: 0;
-}
-/* Zoom léger des statistiques sur PC et mobile */
-#Statistiques img {
-  transform: scale(1.3); /* 1.5 = 50% plus grand */
-  transition: transform 0.3s ease; /* animation douce */
-}
-
-/* Optionnel : zoom encore un peu plus sur mobile */
-@media (max-width: 600px) {
-  #Statistiques img {
-    transform: scale(1.7); /* 70% plus grand sur petit écran */
-  }
-}
-
-  /* Décalage pour menu fixe sur ancres */
-  .anchor-offset {
-    display: block;
-    position: relative;
-    top: -60px; /* hauteur du menu fixe */
-    visibility: hidden; /* invisible */
-  }
   </style>
+</head>
+<body>
 
-  <script src="https://kit.fontawesome.com/0b1c9b6f5f.js" crossorigin="anonymous"></script>
- 
-<!-- MENU FIXE AU-DESSUS DU LOGO -->
-  <nav id="menu-bandeau">
+<!-- ===== MODAL CONNEXION ADMIN ===== -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeLoginModal()" title="Fermer">✕</button>
+    <div style="margin-bottom:20px">
+      <div class="modal-title"><i class="fa-solid fa-shield-halved" style="color:#00bfff;margin-right:8px"></i>Espace Administration</div>
+      <div class="modal-subtitle">Connectez-vous pour modifier le site</div>
+    </div>
+    <div id="login-error" class="modal-error"><i class="fa-solid fa-triangle-exclamation"></i> Identifiant ou mot de passe incorrect.</div>
+    <div class="modal-field">
+      <label><i class="fa-solid fa-user" style="color:#00bfff"></i> Identifiant</label>
+      <input type="text" id="login-user" placeholder="Votre identifiant" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="modal-field">
+      <label><i class="fa-solid fa-lock" style="color:#00bfff"></i> Mot de passe</label>
+      <div class="pw-wrap">
+        <input type="password" id="login-pass" placeholder="Votre mot de passe" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="pw-toggle" type="button" onclick="togglePw('login-pass',this)" tabindex="-1"><i class="fa-solid fa-eye"></i></button>
+      </div>
+    </div>
+    <button class="btn-login" onclick="doLogin()"><i class="fa-solid fa-right-to-bracket"></i> Se connecter</button>
+  </div>
+</div>
+
+<!-- ===== PANNEAU ADMIN ===== -->
+<div id="admin-panel">
+  <div class="admin-topbar">
+    <div class="admin-topbar-title"><i class="fa-solid fa-gauge-high" style="margin-right:8px"></i>Administration — <span>Auto-École de Longueau</span></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="btn-back-site" onclick="closeAdmin()"><i class="fa-solid fa-arrow-left"></i> Retour au site</button>
+      <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <div class="admin-welcome">
+      <div class="admin-welcome-icon"><i class="fa-solid fa-pen-to-square"></i></div>
+      <div>
+        <h2><i class="fa-solid fa-hand-wave" style="color:#00bfff;margin-right:6px"></i>Bienvenue dans votre espace de gestion</h2>
+        <p>Choisissez ce que vous souhaitez modifier. Chaque modification est appliquée immédiatement sur le site.</p>
+        <div id="firebase-status" class="offline">
+          <div class="firebase-dot offline"></div>
+          <i class="fa-solid fa-database"></i> Mode local (Firebase non configuré)
+        </div>
+      </div>
+    </div>
+
+    <!-- ONGLETS -->
+   <div class="admin-tabs">
+      <button class="admin-tab-btn active" onclick="showAdminTab('horaires',this)">🕐 Horaires</button>
+      <button class="admin-tab-btn" onclick="showAdminTab('contacts',this)">📞 Contacts</button>
+      <button class="admin-tab-btn" onclick="showAdminTab('tarifs',this)">💶 Tarifs</button>
+      <button class="admin-tab-btn" onclick="showAdminTab('faq',this)">❓ FAQ</button>
+      <button class="admin-tab-btn" onclick="showAdminTab('compte',this)">⚙️ Mon compte</button>
+    </div>
+
+    <!-- ===== HORAIRES ===== -->
+    <div class="admin-section active" id="admin-horaires">
+      <div class="admin-card">
+        <div class="admin-card-title"><i class="fa-solid fa-clock"></i> Modifier les horaires d'ouverture</div>
+        <div class="admin-card-desc"><i class="fa-solid fa-circle-info" style="color:#00bfff"></i> Pour chaque jour, indiquez les heures d'ouverture. Décochez la case si le bureau est fermé ce jour-là.</div>
+        <div id="horaires-editor"></div>
+        <div style="margin-top:20px">
+          <button class="btn-save" onclick="saveHoraires()"><i class="fa-solid fa-floppy-disk"></i> Enregistrer les horaires</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CONTACTS ===== -->
+    <div class="admin-section" id="admin-contacts">
+      <div class="admin-card">
+        <div class="admin-card-title"><i class="fa-solid fa-address-book"></i> Modifier les informations de contact</div>
+        <div class="admin-card-desc"><i class="fa-solid fa-circle-info" style="color:#00bfff"></i> Mettez à jour vos numéros, email et adresse.</div>
+        <div class="admin-form-row">
+          <div class="admin-field">
+            <label><i class="fa-solid fa-phone"></i> Téléphone fixe</label>
+            <input type="tel" id="c-fixe" value="03 22 53 93 60">
+          </div>
+          <div class="admin-field">
+            <label><i class="fa-solid fa-mobile-screen"></i> Téléphone portable</label>
+            <input type="tel" id="c-mobile" value="06 07 57 75 33">
+          </div>
+        </div>
+        <div class="admin-field">
+          <label><i class="fa-solid fa-envelope"></i> Adresse email</label>
+          <input type="email" id="c-email" value="autoecoledelongueau@free.fr">
+        </div>
+        <div class="admin-field">
+          <label><i class="fa-solid fa-location-dot"></i> Adresse postale</label>
+          <input type="text" id="c-adresse" value="115 Avenue Henri Barbusse, 80330 Longueau">
+        </div>
+        <div class="admin-field">
+          <label><i class="fa-brands fa-facebook"></i> Lien Facebook</label>
+          <input type="url" id="c-facebook" value="https://www.facebook.com/profile.php?id=100054197694817&locale=fr_FR">
+        </div>
+        <div style="margin-top:8px">
+          <button class="btn-save" onclick="saveContacts()"><i class="fa-solid fa-floppy-disk"></i> Enregistrer les contacts</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TARIFS ===== -->
+    <div class="admin-section" id="admin-tarifs">
+      <div class="admin-card">
+        <div class="admin-card-title"><i class="fa-solid fa-euro-sign"></i> Modifier les tarifs</div>
+        <div class="admin-card-desc"><i class="fa-solid fa-circle-info" style="color:#00bfff"></i> Modifiez le nom, la description, la catégorie et le prix de chaque prestation.</div>
+        <div id="tarifs-editor"></div>
+        <button class="btn-add" onclick="addTarifLine()"><i class="fa-solid fa-plus"></i> Ajouter une prestation</button>
+        <div style="margin-top:18px">
+          <button class="btn-save" onclick="saveTarifs()"><i class="fa-solid fa-floppy-disk"></i> Enregistrer les tarifs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FAQ ===== -->
+    <div class="admin-section" id="admin-faq">
+      <div class="admin-card">
+        <div class="admin-card-title"><i class="fa-solid fa-circle-question"></i> Modifier les questions / réponses (FAQ)</div>
+        <div class="admin-card-desc"><i class="fa-solid fa-circle-info" style="color:#00bfff"></i> Modifiez, supprimez ou ajoutez des questions fréquentes.</div>
+        <div id="faq-editor"></div>
+        <button class="btn-add" onclick="addFaqItem()"><i class="fa-solid fa-plus"></i> Ajouter une question</button>
+        <div style="margin-top:18px">
+          <button class="btn-save" onclick="saveFaq()"><i class="fa-solid fa-floppy-disk"></i> Enregistrer la FAQ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MON COMPTE ===== -->
+    <div class="admin-section" id="admin-compte">
+      <div class="admin-card">
+        <div class="admin-card-title"><i class="fa-solid fa-user-gear"></i> Modifier mes identifiants de connexion</div>
+        <div class="admin-card-desc"><i class="fa-solid fa-shield-halved" style="color:#00bfff"></i> Le mot de passe est chiffré (SHA-256) et jamais stocké en clair.</div>
+
+        <div class="admin-section-divider"><i class="fa-solid fa-user"></i> Identifiant</div>
+        <div class="admin-field">
+          <label><i class="fa-solid fa-user"></i> Nouvel identifiant</label>
+          <input type="text" id="new-username" placeholder="Nouvel identifiant" autocomplete="off">
+        </div>
+
+        <div class="admin-section-divider"><i class="fa-solid fa-lock"></i> Mot de passe</div>
+        <div class="admin-field">
+          <label><i class="fa-solid fa-lock"></i> Mot de passe actuel (confirmation)</label>
+          <div class="pw-wrap">
+            <input type="password" id="confirm-current-pw" placeholder="Saisissez votre mot de passe actuel">
+            <button class="pw-toggle" type="button" onclick="togglePw('confirm-current-pw',this)" tabindex="-1"><i class="fa-solid fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="admin-field">
+          <label><i class="fa-solid fa-key"></i> Nouveau mot de passe</label>
+          <div class="pw-wrap">
+            <input type="password" id="new-pw" placeholder="Nouveau mot de passe (min. 8 caractères)">
+            <button class="pw-toggle" type="button" onclick="togglePw('new-pw',this)" tabindex="-1"><i class="fa-solid fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="admin-field">
+          <label><i class="fa-solid fa-key"></i> Confirmer le nouveau mot de passe</label>
+          <div class="pw-wrap">
+            <input type="password" id="confirm-new-pw" placeholder="Répétez le nouveau mot de passe">
+            <button class="pw-toggle" type="button" onclick="togglePw('confirm-new-pw',this)" tabindex="-1"><i class="fa-solid fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="hash-info"><i class="fa-solid fa-shield-halved"></i> Le mot de passe sera stocké sous forme de hash SHA-256 — impossible à lire en clair.</div>
+        <div id="compte-error" class="modal-error" style="margin-top:14px"><i class="fa-solid fa-triangle-exclamation"></i> <span id="compte-error-msg"></span></div>
+        <div style="margin-top:18px">
+          <button class="btn-save" onclick="saveCompte()"><i class="fa-solid fa-floppy-disk"></i> Enregistrer les identifiants</button>
+        </div>
+      </div>
+
+      <!-- Carte info Firebase -->
+      <div class="admin-card">
+        <div class="admin-card-title"><i class="fa-solid fa-database"></i> Base de données Firebase</div>
+        <div class="admin-card-desc">Toutes les modifications (horaires, contacts, tarifs, FAQ, identifiants) sont synchronisées avec Firebase Realtime Database quand la connexion est configurée.</div>
+        <div style="background:#f8f8f8;border:2px solid #ddd;border-radius:6px;padding:16px;font-family:monospace;font-size:13px;line-height:1.8;color:#333">
+          <div><i class="fa-solid fa-folder-tree" style="color:#00bfff"></i> Structure des données Firebase :</div>
+          <div style="margin-top:8px;padding-left:16px">
+            <div><span style="color:#00bfff">autoecolelongueau/</span></div>
+            <div style="padding-left:16px">
+              <div>├─ <span style="color:#22cc55">horaires/</span> ← jours + heures ouverture</div>
+              <div>├─ <span style="color:#22cc55">contacts/</span> ← tel, email, adresse, fb</div>
+              <div>├─ <span style="color:#22cc55">tarifs/</span> ← toutes les prestations</div>
+              <div>├─ <span style="color:#22cc55">faq/</span> ← questions / réponses</div>
+              <div>└─ <span style="color:#22cc55">auth/</span> ← username + hash mot de passe</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:#888;margin-top:12px"><i class="fa-solid fa-circle-info" style="color:#00bfff"></i> Pour connecter Firebase, remplacez les valeurs <code>VOTRE_*</code> dans la configuration en haut du fichier HTML.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg">Modifications enregistrées !</span></div>
+
+<!-- ===== MENU FIXE ===== -->
+<nav id="menu-bandeau">
+  <div id="menu-links">
     <a href="#horaires">Horaires</a>
     <a href="#contacts">Contacts</a>
     <a href="#tarifs">Tarifs</a>
     <a href="#vehicules">Nos véhicules</a>
     <a href="#equipe">L'équipe</a>
     <a href="#avis">Avis</a>
-    <!--<a href="#Statistiques">Statistiques</a>-->
     <a href="#rendez-vous">Rendez-vous</a>
     <a href="#faq">FAQ</a>
-  </nav>
-  <!-- WRAPPER LOGO POUR LE PUSHSOUS LE MENU -->
-  <header class="header-image">
-    <img src="auto-ecole.jpg" alt="Auto-École de Longueau">
-  </header>
+  </div>
+  <button id="admin-login-btn" onclick="openLoginModal()" title="Espace administration">
+    👤
+    <div class="admin-badge"></div>
+  </button>
+</nav>
+
+<!-- ===== HEADER IMAGE ===== -->
+<header class="header-image">
+  <img src="auto-ecole.jpg" alt="Auto-École de Longueau">
+</header>
 
 <main>
 
-  <!-- LOGOS, LABEL QUALITÉ ET AFFILIATION EN HAUT -->
+  <!-- LOGOS -->
   <section id="logos-affiliation">
     <div class="logos-affiliation">
       <img src="affiliation.jpg" alt="Code Rousseau">
@@ -373,102 +648,42 @@ body {
       <img src="permis-1e.jpg" alt="Affiliation">
     </div>
   </section>
- 
-  <!-- HORAIRES D'OUVERTURE -->
+
+  <!-- HORAIRES -->
   <section id="horaires">
-    <span class="anchor-offset" id="horaires"></span>
+    <span class="anchor-offset"></span>
     <h2>Horaires d'ouverture du bureau et des sessions de codes</h2>
-    <ul style="text-align:center;">
-      <li>Lundi : 14h00 – 16h00</li>
-      <li>Mardi : 17h30 – 19h30</li>
-      <li>Mercredi : 16h00 – 18h00</li>
-      <li>Jeudi : Fermé</li>
-      <li>Vendredi : 17h30 – 19h30</li>
-      <li>Samedi : 10h00 – 12h00</li>
-      <li>Dimanche : Fermé</li>
-    </ul>
+    <ul id="horaires-display" style="text-align:center;"></ul>
   </section>
 
   <!-- CONTACTS -->
   <section id="contacts">
     <h2>Contacts</h2>
-    <p style="text-align:center;"><b>Téléphone fix :</b> 03 22 53 93 60</p>
-    <p style="text-align:center;"><b>Téléphone portable :</b> 06 07 57 75 33</p>
-    <p style="text-align:center;"><b>Email :</b> autoecoledelongueau@free.fr</p>
-    <p style="text-align:center;"><b>Adresse :</b> 115 Avenue Henri Barbusse, 80330 Longueau</p>
-    <p style="text-align:center;"><b>Facebook :</b> <a href="https://www.facebook.com/profile.php?id=100054197694817&locale=fr_FR" style="color:#00bfff; text-decoration:underline;" target="_blank">Auto-École de Longueau</a></p>
+    <div id="contacts-display"></div>
   </section>
 
   <!-- TARIFS -->
   <section id="tarifs">
     <h2>Tarifs</h2>
+    <div id="tarifs-display"></div>
+  </section>
 
-    <div class="forfaits-ajout">
-      <h3>Forfaits</h3>
-      <ul>
-        <li><strong>Formule théorique :</strong> 325 €<br>Frais administratifs – Formation théorique – 1 Class Rousseau + 1 manuel code</li>
-        <li><strong>Permis B – Boîte manuelle :</strong> 1280 €<br>Frais administratifs – Formation théorique - 20h de cours pratiques – 1 accompagnement pratique (passage permis)</li>
-        <li><strong>Permis B – Boîte manuelle :</strong> 1580 €<br>Frais administratifs – Formation théorique - 25h de cours pratiques – 2 accompagnements pratiques (passage permis)</li>
-        <li><strong>Permis B – Boîte automatique :</strong> 1050 €<br>Frais administratifs – Formation théorique - 13h leçons cours pratiques – 1 accompagnement pratique</li>
-        <li><strong>Permis AAC (apprentissage anticipé de la conduite/ dès 15 ans) – Boîte manuelle :</strong> 1150 €<br>Frais administratifs – Formation théorique - 20h leçons cours pratiques – 1 Rendez-vous préalable (2h)</li>
-        <li><strong>Permis AAC (apprentissage anticipé de la conduite/ dès 15 ans) – Boîte automatique :</strong> 1000 €<br>Frais administratifs – Formation théorique - 13h leçons cours pratiques – 1 Rendez-vous préalable (2h)</li>
-        <li><strong>Permis B - Boîte automatique sans code :</strong> 850 €<br>Frais administratifs - 13h leçons cours pratiques - 1 accompagnement pratique</li>
-        <li><strong>Permis B - Boîte manuelle sans code :</strong> 1130 €<br>Frais administratifs - 20h leçons cours pratiques - 1 accompagnement pratique</li>
-        <li><strong>Permis B - Boîte manuelle sans code :</strong> 1430 €<br>Frais administratifs - 25h leçons cours pratiques - 2 accompagnements pratiques</li>
-        <li><strong>Formation passerelle :</strong> 470 €<br>Frais administratifs - 7h leçons cours pratiques - 1 évaluation de départ</li>
-      </ul>
-    </div>
-
-    <div class="cadre-tarifs">
-      <h3>Enseignement théorique</h3>
-      <ul>
-        <li><strong>Test audio visuel collectif :</strong> 15 €</li>
-        <li><strong>Forfait code (6 mois) :</strong> 200 €</li>
-      </ul>
-    </div>
-
-    <div class="cadre-tarifs">
-      <h3>Constitution du dossier et présentation à l'examen</h3>
-      <ul>
-        <li><strong>Frais administratifs :</strong> 80 €</li>
-        <li>Accompagnement pratique de conduite avec véhicule :</li>
-        <li><strong>Frais d'accompagnement permis B (boîte manuelle) :</strong> 50 €</li>
-        <li><strong>Frais d'accompagnement permis B (boîte automatique) :</strong> 55 €</li>
-        <li><strong>Redevance paiement ETG :</strong> 30 €</li>
-      </ul>
-    </div>
-
-    <div class="cadre-tarifs">
-      <h3>Tarifs permis B, AAC et conduite supervisée</h3>
-      <ul>
-        <li><strong>Évaluation (hors forfait) :</strong> 40 €</li>
-        <li><strong>Leçon de conduite 1h Permis B (boîte manuelle) :</strong> 50 €</li>
-        <li><strong>Leçon de conduite 1h Permis B (boîte automatique) :</strong> 55 €</li>
-        <li><strong>Leçon de conduite AAC :</strong> 50 €</li>
-        <li><strong>Rendez-vous préalable (boîte manuelle) :</strong> 50 €</li>
-        <li><strong>Rendez-vous préalable (boîte automatique) :</strong> 55 €</li>
-        <li><strong>Rendez-vous pédagogiques théorique et pratique (boîte automatique) :</strong> 90 €</li>
-        <li><strong>Rendez-vous pédagogiques théorique et pratique (boîte manuelle) :</strong> 86 €</li>
-      </ul>
+  <!-- NOS VÉHICULES -->
+  <section id="vehicules">
+    <h2>Nos véhicules</h2>
+    <div class="vehicules">
+      <div class="vehicule">
+        <img src="voiture1.jpg" alt="Voiture boîte automatique">
+        <p><strong>Voiture automatique :</strong> DS 3 Crossback - Rouge Diesel 2024 <br> Pour une conduite plus douce et moderne.</p>
+      </div>
+      <div class="vehicule">
+        <img src="voiture2.jpg" alt="Voiture boîte manuelle">
+        <p><strong>Voiture manuelle :</strong> Citroën C3 - Bleue Diesel 2024 <br> Idéale pour apprendre les bases de la conduite manuelle.</p>
+      </div>
     </div>
   </section>
 
-<!-- NOS VÉHICULES -->
-<section id="vehicules">
-  <h2>Nos véhicules</h2>
-  <div class="vehicules">
-    <div class="vehicule">
-      <img src="voiture1.jpg" alt="Voiture boîte automatique">
-      <p><strong>Voiture automatique :</strong> DS 3 Crossback - Rouge Diesel 2024 <br> Pour une conduite plus douce et moderne.</p>
-    </div>
-    <div class="vehicule">
-      <img src="voiture2.jpg" alt="Voiture boîte manuelle">
-      <p><strong>Voiture manuelle :</strong> Citroën C3 - Bleue Diesel 2024 <br> Idéale pour apprendre les bases de la conduite manuelle.</p>
-    </div>
-   
-  </div>
-</section>
-  <!-- ÉQUIPE + TRAIT BLEU + TEXTE FINAL -->
+  <!-- ÉQUIPE -->
   <section id="equipe">
     <h2>L'équipe</h2>
     <div class="equipe">
@@ -478,221 +693,73 @@ body {
       </div>
       <div class="membre">
         <img src="monitrice2.jpg" alt="Monitrice 2">
-        <p>Sarah – Monitrice depuis 2025, une énergie nouvelle et une approche moderne de l’apprentissage et de la conduite.</p>
+        <p>Sarah – Monitrice depuis 2025, une énergie nouvelle et une approche moderne de l'apprentissage et de la conduite.</p>
       </div>
     </div>
-
     <div class="separator">
       <hr>
-      <p>
-        Sylvie et Sarah accompagnent les élèves de <strong>Longueau</strong> et des communes voisines dans la réussite du <strong>permis B</strong>, en <strong>boîte manuelle</strong> et <strong>boîte automatique</strong>.  
-        Notre auto-école propose également la conduite accompagnée (AAC), la conduite supervisée et la formation passerelle.
-      </p>
+      <p>Sylvie et Sarah accompagnent les élèves de <strong>Longueau</strong> et des communes voisines dans la réussite du <strong>permis B</strong>, en <strong>boîte manuelle</strong> et <strong>boîte automatique</strong>. Notre auto-école propose également la conduite accompagnée (AAC), la conduite supervisée et la formation passerelle.</p>
     </div>
   </section>
 
-  <!-- SECTION AVIS À GAUCHE AVEC PUCES -->
+  <!-- AVIS -->
   <section id="avis" style="margin-bottom:30px;">
     <h2>Avis de nos élèves</h2>
     <ul>
-      <li><p>"Merci à Sylvie et Sarah pour ces mois d’apprentissage, pour tous les conseils qui m’ont permis de réussir mon examen du permis de conduire.
-Avec de la persévérance et de l’espoir, merci d’avoir cru en moi.
-Deux monitrices toujours très souriantes, dynamiques et dans la bonne humeur."</p></li>
-      <li><p>"Superbe auto-école, Sylvie est très pédagogue. Malgré le fait d’être passée avant dans une autre auto-école, elle a accepté de m’aider et de me conseiller. Elle est très patiente et investie avec tous ses élèves. Je vous la recommande, vous aurez votre permis à coup sûr !"</p></li>
+      <li><p>"Merci à Sylvie et Sarah pour ces mois d'apprentissage, pour tous les conseils qui m'ont permis de réussir mon examen du permis de conduire. Avec de la persévérance et de l'espoir, merci d'avoir cru en moi. Deux monitrices toujours très souriantes, dynamiques et dans la bonne humeur."</p></li>
+      <li><p>"Superbe auto-école, Sylvie est très pédagogue. Malgré le fait d'être passée avant dans une autre auto-école, elle a accepté de m'aider et de me conseiller. Elle est très patiente et investie avec tous ses élèves. Je vous la recommande, vous aurez votre permis à coup sûr !"</p></li>
       <li><p>"Auto-école vivement recommandée ! Sylvie est une monitrice très sympathique, patiente et à l'écoute, mais aussi très professionnelle et pédagogue. Un grand merci pour tous les précieux conseils qu'elle a pu me donner et qui m'ont aidée à obtenir mon permis !!!"</p></li>
     </ul>
   </section>
- 
-  <!-- IMAGE AVIS GOOGLE -->
+
+  <!-- AVIS GOOGLE -->
   <section id="avis-google" style="text-align:center; margin-bottom:50px;">
     <img src="avis-google.jpg" alt="Avis Google : 4,9 * sur 178 avis" style="width:250px; height:auto;">
   </section>
-  
-<!-- PRISE DE RENDEZ-VOUS -->
-<section id="rendez-vous">
-  <h2>Prise de rendez-vous</h2>
 
-  <p style="text-align:center; margin-bottom:20px;font-size:1em;">
-    Pour toute demande d’inscription, d’évaluation de départ ou de renseignements complémentaires,  
-    merci de remplir le formulaire ci-dessous.
-  </p>
+  <!-- PRISE DE RENDEZ-VOUS -->
+  <section id="rendez-vous">
+    <h2>Prise de rendez-vous</h2>
+    <p style="text-align:center; margin-bottom:20px; font-size:1em;">Pour toute demande d'inscription, d'évaluation de départ ou de renseignements complémentaires, merci de remplir le formulaire ci-dessous.</p>
+    <form action="https://formspree.io/f/meelvaql" method="POST" class="form-rdv">
+      <label for="Nom">Nom :</label>
+      <input type="text" id="Nom" name="Nom" placeholder="Nom" required>
+      <label for="Prenom">Prénom :</label>
+      <input type="text" id="Prenom" name="Prénom" placeholder="Prénom" required>
+      <label for="Email">Adresse email :</label>
+      <input type="email" id="Email" name="Email" placeholder="Adresse email" required>
+      <label for="Telephone">Téléphone :</label>
+      <input type="tel" id="Telephone" name="Telephone" placeholder="Téléphone" required>
+      <label for="CodePostal">Code postal :</label>
+      <input type="text" id="CodePostal" name="CodePostal" placeholder="Votre code postal" required>
+      <label for="Formation">Formation demandée :</label>
+      <select name="Formation" id="Formation" required>
+        <option value="">-- Sélectionnez une formation --</option>
+        <option value="Permis B - Boîte manuelle 20h">Permis B - Boîte manuelle 20h</option>
+        <option value="Permis B - Boîte manuelle 25h">Permis B - Boîte manuelle 25h</option>
+        <option value="Permis B - Boîte automatique">Permis B - Boîte automatique</option>
+        <option value="Permis B - Boîte automatique sans code">Permis B - Boîte automatique sans code</option>
+        <option value="Permis B - Boîte manuelle sans code">Permis B - Boîte manuelle sans code</option>
+        <option value="AAC - Boîte manuelle">AAC - Boîte manuelle</option>
+        <option value="AAC - Boîte automatique">AAC - Boîte automatique</option>
+        <option value="Formule théorique">Formule théorique</option>
+        <option value="Formation passerelle (automatique -> manuelle)">Formation passerelle (automatique -> manuelle)</option>
+      </select>
+      <label for="Objet">Informations supplémentaires :</label>
+      <textarea id="Objet" name="Objet" rows="3" placeholder="Informations supplémentaires (si nécessaire)"></textarea>
+      <button type="submit">Envoyer la demande</button>
+    </form>
+    <p style="text-align:center; margin-top:20px; font-size:1em;">Nous vous recontacterons rapidement pour fixer un rendez-vous. Les rendez-vous se font sur <a href="#horaires" style="color:#00bfff; text-decoration:underline;">les heures d'ouverture du bureau</a>.</p>
+  </section>
 
-  <form action="https://formspree.io/f/meelvaql" method="POST" class="form-rdv">
+  <!-- FAQ -->
+  <section id="faq">
+    <h2>Questions fréquentes</h2>
+    <p style="text-align:center; margin-top:20px; font-size:1em;">Cliquez sur les questions pour voir les réponses</p>
+    <br>
+    <div id="faq-display"></div>
+  </section>
 
-    <label for="Nom">Nom :</label>
-    <input type="text" id="Nom" name="Nom" placeholder="Nom" required>
-
-    <label for="Prénom">Prénom :</label>
-    <input type="text" id="Prénom" name="Prénom" placeholder="Prénom" required>
-
-    <label for="Email">Adresse email :</label>
-    <input type="email" id="Email" name="Email" placeholder="Adresse email" required>
-
-    <label for="Telephone">Téléphone :</label>
-    <input type="tel" id="Telephone" name="Telephone" placeholder="Téléphone" required>
-
-    <label for="CodePostal">Code postal :</label>
-    <input type="text" id="CodePostal" name="CodePostal" placeholder="Votre code postal" required>
-
-    <label for="Formation">Formation demandée :</label>
-    <select name="Formation" id="Formation" required>
-      <option value="">-- Sélectionnez une formation --</option>
-      <option value="Permis B - Boîte manuelle 20h">Permis B - Boîte manuelle 20h</option>
-      <option value="Permis B - Boîte manuelle 25h">Permis B - Boîte manuelle 25h</option>
-      <option value="Permis B - Boîte automatique">Permis B - Boîte automatique</option>
-      <option value="Permis B - Boîte automatique sans code">Permis B - Boîte automatique sans code</option>
-      <option value="Permis B - Boîte manuelle sans code">Permis B - Boîte manuelle sans code</option>
-      <option value="AAC - Boîte manuelle">AAC - Boîte manuelle</option>
-      <option value="AAC - Boîte automatique">AAC - Boîte automatique</option>
-      <option value="Formule théorique">Formule théorique</option>
-      <option value="Formation passerelle (automatique -> manuelle)">Formation passerelle (automatique -> manuelle)</option>
-    </select>
-
-    <label for="Objet">Informations supplémentaires :</label>
-    <textarea id="Objet" name="Objet" rows="3" placeholder="Informations supplémentaires (si nécessaire)"></textarea>
-
-    <button type="submit">Envoyer la demande</button>
-
-  </form>
-
-  <p style="text-align:center; margin-top:20px; font-size:1em;">
-    Nous vous recontacterons rapidement pour fixer un rendez-vous. Les rendez vous se font sur  <a href="#horaires" style="color:#00bfff; text-decoration:underline;">les heures d'ouverture du bureau</a>, indiqué sur le site.
-  </p>
- 
-</section>
-<!-- FAQ collapsible -->
-<section id="faq">
-  <h2>Questions fréquentes</h2>
-<p style="text-align:center; margin-top:20px; font-size:1em;">
-    Cliquez sur les questions pour voir les réponses
-  </p>
-  <br>
-  <button class="faq-question">1. À quel âge puis-je commencer la conduite accompagnée (AAC) ? </button>
-  <div class="faq-answer">
-    <p>La conduite accompagnée peut débuter dès 15 ans, après avoir validé le code de la route. Nous organisons la formation théorique et pratique adaptée à votre âge.</p>
-  </div>
-
-  <button class="faq-question">2. Combien de temps faut-il pour obtenir le permis B ?</button>
-  <div class="faq-answer">
-    <p>La durée varie selon votre progression et le forfait choisi : environ 20 à 25 heures de conduite pour la boîte manuelle et 13 heures pour la boîte automatique.</p>
-  </div>
-
-  <button class="faq-question">3. Quels documents dois-je fournir pour m'inscrire ?</button>
-  <div class="faq-answer">
-    <p>Un justificatif de domicile de moins de 3 mois, photocopie recto-verso de la carte d'identité, ASSR2, une photo d'identité AGRÉÉE ANTS avec code ephoto, photocopie recensement ou journée d'appel, justificatif de domicile de moins de 6 mois, photocopie d'identité recto-verso du responsable légal + attestation d'hébergement, 2 enveloppes timbrées à 50g (A5)</p>
-  </div>
-
-  <button class="faq-question">4. Comment se déroule l'examen du code de la route ?</button>
-  <div class="faq-answer">
-    <p>L'examen du code comporte 40 questions à choix multiple. Il faut répondre correctement à au moins 35 questions pour réussir..</p>
-  </div>
-
-  <button class="faq-question">5. Quels sont les principaux points à retenir pour réussir le code ?</button>
-  <div class="faq-answer">
-    <p>Utilisez les moyens mis à disposition par votre auto-école (le kit pédagogique ainsi que l'application numérique). La pratique dans notre salle spécialisée est très utile.</p>
-  </div>
-
-  <button class="faq-question">6. Comment se passe l'examen pratique de conduite ?</button>
-  <div class="faq-answer">
-    <p>L'examen pratique dure environ 30 à 40 minutes et évalue votre maîtrise du véhicule, votre respect du code de la route et votre capacité à anticiper les dangers. L’examinateur vous accompagne sur différents types de routes.</p>
-  </div>
-
-  <button class="faq-question">7. Que faire en cas d'erreur pendant l'examen de conduite ?</button>
-  <div class="faq-answer">
-    <p>Restez calme, corrigez votre erreur si possible et poursuivez la conduite normalement, une erreur n'entraîne pas automatiquement l’échec.</p>
-  </div>
-
-  <button class="faq-question">8. Quels conseils pour bien progresser en conduite ?</button>
-  <div class="faq-answer">
-    <p>Pratiquez régulièrement, écoutez les conseils de votre moniteur, soyez attentif à la route et à vos réflexes. Notez vos erreurs et travaillez-les à chaque leçon.</p>
-  </div>
-
-  <button class="faq-question">9. Quels sont les risques les plus fréquents pour les nouveaux conducteurs ?</button>
-  <div class="faq-answer">
-    <p>Les erreurs courantes incluent la mauvaise estimation des distances et des vitesses, les excès de vitesse, les oublis de clignotants, le manque de prise d'informations avant un changement de voie et la prise d'informations aux intersections.</p>
-  </div>
-
-  <button class="faq-question">10. Est-il possible de réviser le code en ligne avant les cours ?</button>
-  <div class="faq-answer">
-    <p>Oui, il existe une formule qui permet de faire des sessions afin de réviser le code de la route depuis chez soi grâce au Code Rousseau. Cela permet de se familiariser avec les questions et d’arriver mieux preparé à l’examen.</p>
-  </div>
-
-  <button class="faq-question">11. Comment savoir si je suis prêt pour l'examen du code de la route ?</button>
-  <div class="faq-answer">
-    <p>Procédez à votre auto-évaluation puis demander l'avis de votre formateur, et lorsque vous vous estimez prêt, vous pouvez solliciter une session dans le bureau de poste de votre choix, au plus proche de votre domicile.</p>
-  </div>
-
-  <button class="faq-question">12. Que se passe-t-il si j’échoue à l'examen du code ou de la conduite ?</button>
-  <div class="faq-answer">
-    <p>Vous pouvez le repasser. Après un échec au code, vous pouvez vous réinscrire. Pour l’examen pratique, parlez-en avec votre formateur.</p>
-  </div>
-
-  <button class="faq-question">13. Quels conseils pour gérer le stress le jour de l'examen ?</button>
-  <div class="faq-answer">
-    <p>Respirez profondément, restez concentré sur votre conduite, écoutez attentivement l’examinateur et rappelez-vous que vous êtes préparé. Une bonne nuit de sommeil et un repas équilibré aide aussi à se détendre.</p>
-  </div>
-  <button class="faq-question">14. Quelle est la différence entre la boîte manuelle et la boîte automatique ?</button>
-  <div class="faq-answer">
-    <p>La boîte manuelle nécessite de gérer l’embrayage et le passage des vitesses, tandis que la boîte automatique simplifie la conduite en supprimant ces actions. Elle est idéale pour les élèves stressés ou souhaitant un apprentissage plus rapide.</p>
-  </div>
-   <button class="faq-question">15. Puis-je passer du permis automatique (B78) au permis boîte manuelle ?</button>
-  <div class="faq-answer">
-    <p>Oui. Après l’obtention du permis automatique et après une évaluation, une formation complémentaire de minimum 7 heures que l'on appelle passerelle, permet de conduire une boîte manuelle, sans repasser l’examen.</p>
-  </div>
-   <button class="faq-question">16. Proposez-vous la conduite supervisée après un échec à l’examen ?</button>
-  <div class="faq-answer">
-    <p>Oui. La conduite supervisée est une excellente solution pour continuer à s’entraîner, gagner en confiance et améliorer ses chances de réussite lors du prochain passage.</p>
-  </div>
-   <button class="faq-question">17. Est-il possible de faire un réentraînement après une longue période sans conduire ?</button>
-  <div class="faq-answer">
-    <p>Absolument. Le réentraînement permet de reprendre la conduite en douceur, de corriger les mauvaises habitudes et de retrouver assurance et sécurité au volant.</p>
-  </div>
-   <button class="faq-question">18. La conduite accompagnée permet-elle d’augmenter les chances de réussite au permis ?</button>
-  <div class="faq-answer">
-    <p>Oui. Les statistiques montrent que la conduite accompagnée améliore le taux de réussite à l’examen et permet une meilleure maîtrise de la conduite sur le long terme.</p>
-  </div>
-   <button class="faq-question">19. Combien d’heures de conduite sont obligatoires pour passer l’examen ?</button>
-  <div class="faq-answer">
-    <p>Le minimum légal est de 20 heures en boîte manuelle et 13 heures en boîte automatique. Toutefois, le nombre d’heures dépend de chaque élève.</p>
-  </div>
-  <button class="faq-question">20. À quelle fréquence puis-je prendre des leçons de conduite ?</button>
-  <div class="faq-answer">
-    <p>Les leçons peuvent être planifiées selon vos disponibilités, avec une fréquence régulière pour assurer une progression efficace.</p>
-  </div>
-  <button class="faq-question">21. Quels sont les moyens de paiement acceptés ?</button>
-  <div class="faq-answer">
-    <p>Nous acceptons plusieurs moyens de paiement et proposons des facilités afin de rendre la formation accessible au plus grand nombre.</p>
-  </div>
-  <button class="faq-question">22. Le permis à 1 € par jour est-il accessible à tous ?</button>
-  <div class="faq-answer">
-    <p>Il est destiné aux jeunes de 15 à 25 ans sous conditions d’éligibilité. Nous vous accompagnons dans les démarches si vous êtes concerné.</p>
-  </div>
-  <button class="faq-question">23. L’auto-école s’occupe-t-elle des démarches administratives ANTS ?</button>
-  <div class="faq-answer">
-    <p>Oui. Nous prenons en charge l’ensemble des démarches administratives pour vous simplifier la vie.</p>
-  </div>
-  <button class="faq-question">24. Combien de temps le code est-il valable ?</button>
-  <div class="faq-answer">
-    <p>Le code de la route est valable 5 ans à compter de sa réussite.</p>
-  </div>
-   <button class="faq-question">25. Aidez-vous les élèves stressés ou en manque de confiance ?</button>
-  <div class="faq-answer">
-    <p>Oui. Nous adaptons notre pédagogie à chaque élève, avec patience, écoute et bienveillance.</p>
-  </div>
-   <button class="faq-question">26. Que faire si j’ai peur de conduire ?</button>
-  <div class="faq-answer">
-    <p>La peur est fréquente. Grâce à un accompagnement progressif et personnalisé, nous vous aidons à reprendre confiance étape par étape.</p>
-  </div>
-   <button class="faq-question">27. Quel est votre taux de réussite au permis ?</button>
-  <div class="faq-answer">
-    <p>Notre taux de réussite est satisfaisant et reflète la qualité de notre accompagnement et l’implication de nos élèves.</p>
-  </div>
-   <button class="faq-question">28. Pourquoi choisir votre auto-école plutôt qu’une autre ?</button>
-  <div class="faq-answer">
-    <p>Pour notre pédagogie personnalisée, notre écoute, notre sérieux et notre objectif principal : votre réussite et votre sécurité sur la route.</p>
-  </div>
-
-</section>
 </main>
 
 <footer>
@@ -702,53 +769,634 @@ Deux monitrices toujours très souriantes, dynamiques et dans la bonne humeur."<
 <button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'});">↑</button>
 
 <script>
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', function(e) {
-    const targetId = this.getAttribute('href').substring(1);
-    const target = document.getElementById(targetId);
-    if(target){
-      e.preventDefault(); // empêche le scroll par défaut
-      const menuHeight = document.getElementById('menu-bandeau').offsetHeight;
-      const targetPos = target.getBoundingClientRect().top + window.scrollY - menuHeight;
-      window.scrollTo({ top: targetPos, behavior: 'smooth' });
-    }
+// =============================================
+// CHIFFREMENT SHA-256 (Web Crypto API native)
+// =============================================
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray  = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
-    // Fermer le menu mobile si ouvert
-    const menu = document.getElementById('menu-bandeau');
-    if(window.innerWidth <= 768 && menu.classList.contains('active')){
-      menu.classList.remove('active');
+// =============================================
+// STOCKAGE LOCAL DES IDENTIFIANTS
+// =============================================
+// Hash SHA-256 du mot de passe par défaut "longueau2024"
+// Valeur pré-calculée pour permettre la connexion initiale
+const DEFAULT_HASH = '6a5e0e9e2c67c0c1a7b2d5f8e9a3c1b4d6e7f2a9b0c3d4e5f6a7b8c9d0e1f2a3'; // placeholder
+
+let authData = {
+  username: 'admin',
+  passwordHash: null // sera initialisé au démarrage
+};
+
+// Initialise le hash si absent (première utilisation)
+async function initAuth() {
+  const stored = localStorage.getItem('ael_auth');
+  if (stored) {
+    try { authData = JSON.parse(stored); return; } catch(e) {}
+  }
+  // Premier démarrage : hash du mot de passe par défaut
+  authData.passwordHash = await sha256('longueau2024');
+  localStorage.setItem('ael_auth', JSON.stringify(authData));
+}
+
+// =============================================
+// DONNÉES INITIALES
+// =============================================
+let isLoggedIn = false;
+
+let horaireData = [
+  {day:'Lundi',    open:true,  debut:'14:00', fin:'16:00'},
+  {day:'Mardi',    open:true,  debut:'17:30', fin:'19:30'},
+  {day:'Mercredi', open:true,  debut:'16:00', fin:'18:00'},
+  {day:'Jeudi',    open:false, debut:'',      fin:''},
+  {day:'Vendredi', open:true,  debut:'17:30', fin:'19:30'},
+  {day:'Samedi',   open:true,  debut:'10:00', fin:'12:00'},
+  {day:'Dimanche', open:false, debut:'',      fin:''},
+];
+
+let contactData = {
+  fixe:    '03 22 53 93 60',
+  mobile:  '06 07 57 75 33',
+  email:   'autoecoledelongueau@free.fr',
+  adresse: '115 Avenue Henri Barbusse, 80330 Longueau',
+  facebook:'https://www.facebook.com/profile.php?id=100054197694817&locale=fr_FR',
+};
+
+const catConfig = {
+  forfaits: {label:'Forfaits',      h3:'Forfaits',                                              cls:'forfaits-ajout'},
+  theorique:{label:'Théorique',     h3:'Enseignement théorique',                                cls:'cadre-tarifs'},
+  admin:    {label:'Frais admin.',  h3:"Constitution du dossier et présentation à l'examen",   cls:'cadre-tarifs'},
+  lecons:   {label:'Leçons',        h3:'Tarifs permis B, AAC et conduite supervisée',           cls:'cadre-tarifs'},
+};
+
+let tarifData = [
+  {cat:'forfaits', name:'Formule théorique', desc:'Frais administratifs – Formation théorique – 1 Class Rousseau + 1 manuel code', price:325},
+  {cat:'forfaits', name:'Permis B – Boîte manuelle 20h', desc:'Frais administratifs – Formation théorique – 20h de cours pratiques – 1 accompagnement pratique', price:1280},
+  {cat:'forfaits', name:'Permis B – Boîte manuelle 25h', desc:'Frais administratifs – Formation théorique – 25h de cours pratiques – 2 accompagnements pratiques', price:1580},
+  {cat:'forfaits', name:'Permis B – Boîte automatique', desc:'Frais administratifs – Formation théorique – 13h de cours pratiques – 1 accompagnement pratique', price:1050},
+  {cat:'forfaits', name:'Permis AAC – Boîte manuelle (dès 15 ans)', desc:'Frais administratifs – Formation théorique – 20h de cours pratiques – 1 Rendez-vous préalable (2h)', price:1150},
+  {cat:'forfaits', name:'Permis AAC – Boîte automatique (dès 15 ans)', desc:'Frais administratifs – Formation théorique – 13h de cours pratiques – 1 Rendez-vous préalable (2h)', price:1000},
+  {cat:'forfaits', name:'Permis B – Boîte automatique sans code', desc:'Frais administratifs – 13h de cours pratiques – 1 accompagnement pratique', price:850},
+  {cat:'forfaits', name:'Permis B – Boîte manuelle sans code 20h', desc:'Frais administratifs – 20h de cours pratiques – 1 accompagnement pratique', price:1130},
+  {cat:'forfaits', name:'Permis B – Boîte manuelle sans code 25h', desc:'Frais administratifs – 25h de cours pratiques – 2 accompagnements pratiques', price:1430},
+  {cat:'forfaits', name:'Formation passerelle (auto → manuelle)', desc:'Frais administratifs – 7h de cours pratiques – 1 évaluation de départ', price:470},
+  {cat:'theorique', name:'Test audio visuel collectif', desc:'Session de test en salle', price:15},
+  {cat:'theorique', name:'Forfait code (6 mois)', desc:'Accès illimité 6 mois aux sessions de code', price:200},
+  {cat:'admin', name:'Frais administratifs', desc:"Constitution du dossier et présentation à l'examen", price:80},
+  {cat:'admin', name:'Accompagnement permis B – Boîte manuelle', desc:'', price:50},
+  {cat:'admin', name:'Accompagnement permis B – Boîte automatique', desc:'', price:55},
+  {cat:'admin', name:'Redevance paiement ETG', desc:'', price:30},
+  {cat:'lecons', name:'Évaluation (hors forfait)', desc:'', price:40},
+  {cat:'lecons', name:'Leçon de conduite 1h – Boîte manuelle', desc:'', price:50},
+  {cat:'lecons', name:'Leçon de conduite 1h – Boîte automatique', desc:'', price:55},
+  {cat:'lecons', name:'Leçon de conduite AAC', desc:'', price:50},
+  {cat:'lecons', name:'Rendez-vous préalable – Boîte manuelle', desc:'', price:50},
+  {cat:'lecons', name:'Rendez-vous préalable – Boîte automatique', desc:'', price:55},
+  {cat:'lecons', name:'Rendez-vous pédagogiques théorique et pratique – Boîte automatique', desc:'', price:90},
+  {cat:'lecons', name:'Rendez-vous pédagogiques théorique et pratique – Boîte manuelle', desc:'', price:86},
+];
+
+let faqData = [
+  {q:"1. À quel âge puis-je commencer la conduite accompagnée (AAC) ?", a:"La conduite accompagnée peut débuter dès 15 ans, après avoir validé le code de la route. Nous organisons la formation théorique et pratique adaptée à votre âge."},
+  {q:"2. Combien de temps faut-il pour obtenir le permis B ?", a:"La durée varie selon votre progression et le forfait choisi : environ 20 à 25 heures de conduite pour la boîte manuelle et 13 heures pour la boîte automatique."},
+  {q:"3. Quels documents dois-je fournir pour m'inscrire ?", a:"Un justificatif de domicile de moins de 3 mois, photocopie recto-verso de la carte d'identité, ASSR2, une photo d'identité AGRÉÉE ANTS avec code ephoto, photocopie recensement ou journée d'appel, justificatif de domicile de moins de 6 mois, photocopie d'identité recto-verso du responsable légal + attestation d'hébergement, 2 enveloppes timbrées à 50g (A5)"},
+  {q:"4. Comment se déroule l'examen du code de la route ?", a:"L'examen du code comporte 40 questions à choix multiple. Il faut répondre correctement à au moins 35 questions pour réussir."},
+  {q:"5. Quels sont les principaux points à retenir pour réussir le code ?", a:"Utilisez les moyens mis à disposition par votre auto-école (le kit pédagogique ainsi que l'application numérique). La pratique dans notre salle spécialisée est très utile."},
+  {q:"6. Comment se passe l'examen pratique de conduite ?", a:"L'examen pratique dure environ 30 à 40 minutes et évalue votre maîtrise du véhicule, votre respect du code de la route et votre capacité à anticiper les dangers. L'examinateur vous accompagne sur différents types de routes."},
+  {q:"7. Que faire en cas d'erreur pendant l'examen de conduite ?", a:"Restez calme, corrigez votre erreur si possible et poursuivez la conduite normalement, une erreur n'entraîne pas automatiquement l'échec."},
+  {q:"8. Quels conseils pour bien progresser en conduite ?", a:"Pratiquez régulièrement, écoutez les conseils de votre moniteur, soyez attentif à la route et à vos réflexes. Notez vos erreurs et travaillez-les à chaque leçon."},
+  {q:"9. Quels sont les risques les plus fréquents pour les nouveaux conducteurs ?", a:"Les erreurs courantes incluent la mauvaise estimation des distances et des vitesses, les excès de vitesse, les oublis de clignotants, le manque de prise d'informations avant un changement de voie et la prise d'informations aux intersections."},
+  {q:"10. Est-il possible de réviser le code en ligne avant les cours ?", a:"Oui, il existe une formule qui permet de faire des sessions afin de réviser le code de la route depuis chez soi grâce au Code Rousseau. Cela permet de se familiariser avec les questions et d'arriver mieux préparé à l'examen."},
+  {q:"11. Comment savoir si je suis prêt pour l'examen du code de la route ?", a:"Procédez à votre auto-évaluation puis demandez l'avis de votre formateur, et lorsque vous vous estimez prêt, vous pouvez solliciter une session dans le bureau de poste de votre choix, au plus proche de votre domicile."},
+  {q:"12. Que se passe-t-il si j'échoue à l'examen du code ou de la conduite ?", a:"Vous pouvez le repasser. Après un échec au code, vous pouvez vous réinscrire. Pour l'examen pratique, parlez-en avec votre formateur."},
+  {q:"13. Quels conseils pour gérer le stress le jour de l'examen ?", a:"Respirez profondément, restez concentré sur votre conduite, écoutez attentivement l'examinateur et rappelez-vous que vous êtes préparé. Une bonne nuit de sommeil et un repas équilibré aide aussi à se détendre."},
+  {q:"14. Quelle est la différence entre la boîte manuelle et la boîte automatique ?", a:"La boîte manuelle nécessite de gérer l'embrayage et le passage des vitesses, tandis que la boîte automatique simplifie la conduite en supprimant ces actions. Elle est idéale pour les élèves stressés ou souhaitant un apprentissage plus rapide."},
+  {q:"15. Puis-je passer du permis automatique (B78) au permis boîte manuelle ?", a:"Oui. Après l'obtention du permis automatique et après une évaluation, une formation complémentaire de minimum 7 heures que l'on appelle passerelle, permet de conduire une boîte manuelle, sans repasser l'examen."},
+  {q:"16. Proposez-vous la conduite supervisée après un échec à l'examen ?", a:"Oui. La conduite supervisée est une excellente solution pour continuer à s'entraîner, gagner en confiance et améliorer ses chances de réussite lors du prochain passage."},
+  {q:"17. Est-il possible de faire un réentraînement après une longue période sans conduire ?", a:"Absolument. Le réentraînement permet de reprendre la conduite en douceur, de corriger les mauvaises habitudes et de retrouver assurance et sécurité au volant."},
+  {q:"18. La conduite accompagnée permet-elle d'augmenter les chances de réussite au permis ?", a:"Oui. Les statistiques montrent que la conduite accompagnée améliore le taux de réussite à l'examen et permet une meilleure maîtrise de la conduite sur le long terme."},
+  {q:"19. Combien d'heures de conduite sont obligatoires pour passer l'examen ?", a:"Le minimum légal est de 20 heures en boîte manuelle et 13 heures en boîte automatique. Toutefois, le nombre d'heures dépend de chaque élève."},
+  {q:"20. À quelle fréquence puis-je prendre des leçons de conduite ?", a:"Les leçons peuvent être planifiées selon vos disponibilités, avec une fréquence régulière pour assurer une progression efficace."},
+  {q:"21. Quels sont les moyens de paiement acceptés ?", a:"Nous acceptons plusieurs moyens de paiement et proposons des facilités afin de rendre la formation accessible au plus grand nombre."},
+  {q:"22. Le permis à 1 € par jour est-il accessible à tous ?", a:"Il est destiné aux jeunes de 15 à 25 ans sous conditions d'éligibilité. Nous vous accompagnons dans les démarches si vous êtes concerné."},
+  {q:"23. L'auto-école s'occupe-t-elle des démarches administratives ANTS ?", a:"Oui. Nous prenons en charge l'ensemble des démarches administratives pour vous simplifier la vie."},
+  {q:"24. Combien de temps le code est-il valable ?", a:"Le code de la route est valable 5 ans à compter de sa réussite."},
+  {q:"25. Aidez-vous les élèves stressés ou en manque de confiance ?", a:"Oui. Nous adaptons notre pédagogie à chaque élève, avec patience, écoute et bienveillance."},
+  {q:"26. Que faire si j'ai peur de conduire ?", a:"La peur est fréquente. Grâce à un accompagnement progressif et personnalisé, nous vous aidons à reprendre confiance étape par étape."},
+  {q:"27. Quel est votre taux de réussite au permis ?", a:"Notre taux de réussite est satisfaisant et reflète la qualité de notre accompagnement et l'implication de nos élèves."},
+  {q:"28. Pourquoi choisir votre auto-école plutôt qu'une autre ?", a:"Pour notre pédagogie personnalisée, notre écoute, notre sérieux et notre objectif principal : votre réussite et votre sécurité sur la route."},
+];
+
+// =============================================
+// FIREBASE — Lecture/écriture des données
+// =============================================
+// ⚠️ Les fonctions firebase sont exposées via window._firebase (voir <script type="module"> en haut)
+// Elles ne sont disponibles qu'après l'initialisation asynchrone du module
+
+async function fbSave(path, data) {
+  const fb = window._firebase;
+  if (!fb || !fb.ready) return false;
+  try {
+    await fb.set(fb.ref(fb.db, path), data);
+    return true;
+  } catch(e) {
+    console.error('Firebase write error:', e);
+    return false;
+  }
+}
+
+async function fbLoad(path) {
+  const fb = window._firebase;
+  if (!fb || !fb.ready) return null;
+  try {
+    const snap = await fb.get(fb.ref(fb.db, path));
+    return snap.exists() ? snap.val() : null;
+  } catch(e) {
+    console.error('Firebase read error:', e);
+    return null;
+  }
+}
+
+// Charge toutes les données depuis Firebase au démarrage
+async function loadFromFirebase() {
+  const fb = window._firebase;
+  if (!fb || !fb.ready) return;
+
+  const [h, c, t, f, auth] = await Promise.all([
+    fbLoad('autoecolelongueau/horaires'),
+    fbLoad('autoecolelongueau/contacts'),
+    fbLoad('autoecolelongueau/tarifs'),
+    fbLoad('autoecolelongueau/faq'),
+    fbLoad('autoecolelongueau/auth'),
+  ]);
+
+  if (h) horaireData = h;
+  if (c) Object.assign(contactData, c);
+  if (t && Array.isArray(t)) tarifData = t;
+  if (f && Array.isArray(f)) faqData = f;
+  if (auth) authData = auth;
+
+  // Rafraîchit l'affichage
+  renderHorairesDisplay();
+  renderContactsDisplay();
+  renderTarifsDisplay();
+  renderFaqDisplay();
+
+  // Met à jour le badge Firebase
+  const el = document.getElementById('firebase-status');
+  if (el) {
+    el.className = 'connected';
+    el.innerHTML = '<div class="firebase-dot connected"></div><i class="fa-solid fa-database"></i> Firebase connecté';
+  }
+}
+
+// =============================================
+// AUTH
+// =============================================
+function openLoginModal() {
+  if (isLoggedIn) { openAdmin(); return; }
+  document.getElementById('login-modal').classList.add('open');
+  setTimeout(() => document.getElementById('login-user').focus(), 100);
+}
+function closeLoginModal() {
+  document.getElementById('login-modal').classList.remove('open');
+  document.getElementById('login-error').classList.remove('show');
+}
+
+async function doLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  const hash = await sha256(p);
+
+  if (u === authData.username && hash === authData.passwordHash) {
+    isLoggedIn = true;
+    document.getElementById('login-modal').classList.remove('open');
+    document.getElementById('admin-login-btn').classList.add('logged-in');
+    openAdmin();
+  } else {
+    document.getElementById('login-error').classList.add('show');
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-pass').focus();
+  }
+}
+
+function logout() {
+  isLoggedIn = false;
+  document.getElementById('admin-login-btn').classList.remove('logged-in');
+  document.getElementById('admin-panel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function openAdmin() {
+  renderAdminHoraires();
+  renderAdminTarifs();
+  renderAdminFaq();
+  syncContactsToAdmin();
+  document.getElementById('new-username').value = authData.username;
+  document.getElementById('admin-panel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    document.querySelectorAll('#admin-panel i[class*="fa-"]').forEach(el => {
+      el.style.display = 'none';
+      el.offsetHeight;
+      el.style.display = '';
+    });
+  }, 50);
+}
+function closeAdmin() {
+  document.getElementById('admin-panel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// =============================================
+// MON COMPTE — Changement identifiants
+// =============================================
+async function saveCompte() {
+  const newUsername    = document.getElementById('new-username').value.trim();
+  const currentPw     = document.getElementById('confirm-current-pw').value;
+  const newPw         = document.getElementById('new-pw').value;
+  const confirmNewPw  = document.getElementById('confirm-new-pw').value;
+  const errEl         = document.getElementById('compte-error');
+  const errMsg        = document.getElementById('compte-error-msg');
+
+  errEl.classList.remove('show');
+
+  // Validations
+  if (!newUsername) {
+    errMsg.textContent = "L'identifiant ne peut pas être vide.";
+    errEl.classList.add('show'); return;
+  }
+  if (!currentPw) {
+    errMsg.textContent = "Veuillez saisir votre mot de passe actuel pour confirmer.";
+    errEl.classList.add('show'); return;
+  }
+
+  // Vérification mot de passe actuel
+  const currentHash = await sha256(currentPw);
+  if (currentHash !== authData.passwordHash) {
+    errMsg.textContent = "Le mot de passe actuel est incorrect.";
+    errEl.classList.add('show'); return;
+  }
+
+  let newHash = authData.passwordHash; // conserve l'ancien si pas de changement
+
+  if (newPw) {
+    if (newPw.length < 8) {
+      errMsg.textContent = "Le nouveau mot de passe doit contenir au moins 8 caractères.";
+      errEl.classList.add('show'); return;
     }
+    if (newPw !== confirmNewPw) {
+      errMsg.textContent = "Les deux nouveaux mots de passe ne correspondent pas.";
+      errEl.classList.add('show'); return;
+    }
+    newHash = await sha256(newPw);
+  }
+
+  authData.username     = newUsername;
+  authData.passwordHash = newHash;
+
+  // Sauvegarde locale
+  localStorage.setItem('ael_auth', JSON.stringify(authData));
+
+  // Sauvegarde Firebase
+  const saved = await fbSave('autoecolelongueau/auth', authData);
+
+  // Vide les champs
+  document.getElementById('confirm-current-pw').value = '';
+  document.getElementById('new-pw').value = '';
+  document.getElementById('confirm-new-pw').value = '';
+
+  showToast(saved
+    ? '✅ Identifiants mis à jour (Firebase + local)'
+    : '✅ Identifiants mis à jour (local uniquement)'
+  );
+}
+
+// =============================================
+// TOGGLE VISIBILITÉ MOT DE PASSE
+// =============================================
+function togglePw(inputId, btn) {
+  const input = document.getElementById(inputId);
+  const icon  = btn.querySelector('i');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.className = 'fa-solid fa-eye-slash';
+  } else {
+    input.type = 'password';
+    icon.className = 'fa-solid fa-eye';
+  }
+}
+
+// =============================================
+// TABS ADMIN
+// =============================================
+function showAdminTab(id, btn) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('admin-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// =============================================
+// HORAIRES
+// =============================================
+const dayIcons = {
+  'Lundi':'fa-1','Mardi':'fa-2','Mercredi':'fa-3','Jeudi':'fa-4',
+  'Vendredi':'fa-5','Samedi':'fa-6','Dimanche':'fa-7'
+};
+const dayIconsReal = {
+  'Lundi':'fa-solid fa-l','Mardi':'fa-solid fa-calendar-day',
+  'Mercredi':'fa-solid fa-calendar-day','Jeudi':'fa-solid fa-calendar-day',
+  'Vendredi':'fa-solid fa-calendar-day','Samedi':'fa-solid fa-sun',
+  'Dimanche':'fa-solid fa-moon'
+};
+
+function renderAdminHoraires() {
+  const el = document.getElementById('horaires-editor');
+  el.innerHTML = horaireData.map((h, i) => `
+    <div class="horaire-admin-row" id="hrow-${i}">
+      <div class="horaire-admin-day"><i class="fa-regular fa-calendar" style="color:#00bfff"></i> ${h.day}</div>
+      <label class="admin-toggle">
+        <input type="checkbox" id="h-open-${i}" ${h.open ? 'checked' : ''} onchange="toggleHoraireOpen(${i})">
+        <span id="h-status-${i}">${h.open ? 'Ouvert' : 'Fermé'}</span>
+      </label>
+      <div class="time-fields" id="h-times-${i}" style="${h.open ? '' : 'opacity:0.35;pointer-events:none'}">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <div class="admin-field" style="margin:0;flex:1;min-width:100px">
+            <label><i class="fa-regular fa-clock"></i> Ouverture</label>
+            <input type="time" id="h-debut-${i}" value="${h.debut}">
+          </div>
+          <div class="admin-field" style="margin:0;flex:1;min-width:100px">
+            <label><i class="fa-regular fa-clock"></i> Fermeture</label>
+            <input type="time" id="h-fin-${i}" value="${h.fin}">
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleHoraireOpen(i) {
+  const checked = document.getElementById('h-open-' + i).checked;
+  document.getElementById('h-status-' + i).textContent = checked ? 'Ouvert' : 'Fermé';
+  const times = document.getElementById('h-times-' + i);
+  times.style.opacity       = checked ? '1' : '0.35';
+  times.style.pointerEvents = checked ? 'auto' : 'none';
+}
+
+async function saveHoraires() {
+  horaireData.forEach((h, i) => {
+    h.open  = document.getElementById('h-open-' + i).checked;
+    h.debut = document.getElementById('h-debut-' + i).value;
+    h.fin   = document.getElementById('h-fin-' + i).value;
   });
-});
-</script>
-<script>
-  const questions = document.querySelectorAll('.faq-question');
-  questions.forEach(q => {
+  renderHorairesDisplay();
+  const saved = await fbSave('autoecolelongueau/horaires', horaireData);
+  showToast(saved ? '✅ Horaires mis à jour (Firebase)' : '✅ Horaires mis à jour (local)');
+}
+
+function renderHorairesDisplay() {
+  const el = document.getElementById('horaires-display');
+  el.innerHTML = horaireData.map(h => `
+    <li style="text-align:center">${h.day} : ${h.open ? formatTime(h.debut) + ' – ' + formatTime(h.fin) : 'Fermé'}</li>
+  `).join('');
+}
+
+function formatTime(t) {
+  if (!t) return '';
+  const [hh, mm] = t.split(':');
+  return hh + 'h' + mm;
+}
+
+// =============================================
+// CONTACTS
+// =============================================
+function syncContactsToAdmin() {
+  document.getElementById('c-fixe').value    = contactData.fixe;
+  document.getElementById('c-mobile').value  = contactData.mobile;
+  document.getElementById('c-email').value   = contactData.email;
+  document.getElementById('c-adresse').value = contactData.adresse;
+  document.getElementById('c-facebook').value= contactData.facebook;
+}
+
+async function saveContacts() {
+  contactData.fixe    = document.getElementById('c-fixe').value;
+  contactData.mobile  = document.getElementById('c-mobile').value;
+  contactData.email   = document.getElementById('c-email').value;
+  contactData.adresse = document.getElementById('c-adresse').value;
+  contactData.facebook= document.getElementById('c-facebook').value;
+  renderContactsDisplay();
+  const saved = await fbSave('autoecolelongueau/contacts', contactData);
+  showToast(saved ? '✅ Contacts mis à jour (Firebase)' : '✅ Contacts mis à jour (local)');
+}
+
+function renderContactsDisplay() {
+  const el = document.getElementById('contacts-display');
+  el.innerHTML = `
+    <p style="text-align:center"><b>Téléphone fixe :</b> ${esc(contactData.fixe)}</p>
+    <p style="text-align:center"><b>Téléphone portable :</b> ${esc(contactData.mobile)}</p>
+    <p style="text-align:center"><b>Email :</b> ${esc(contactData.email)}</p>
+    <p style="text-align:center"><b>Adresse :</b> ${esc(contactData.adresse)}</p>
+    <p style="text-align:center"><b>Facebook :</b> <a href="${esc(contactData.facebook)}" style="color:#00bfff;text-decoration:underline;" target="_blank">Auto-École de Longueau</a></p>
+  `;
+}
+
+// =============================================
+// TARIFS
+// =============================================
+function renderAdminTarifs() {
+  const el = document.getElementById('tarifs-editor');
+  el.innerHTML = tarifData.map((t, i) => `
+    <div class="tarif-admin-row" id="trow-${i}">
+      <div>
+        <div class="admin-field" style="margin-bottom:8px">
+          <label><i class="fa-solid fa-tag"></i> Nom de la prestation</label>
+          <input type="text" id="t-name-${i}" value="${esc(t.name)}">
+        </div>
+        <div class="admin-field" style="margin-bottom:8px">
+          <label><i class="fa-solid fa-align-left"></i> Description (optionnel)</label>
+          <input type="text" id="t-desc-${i}" value="${esc(t.desc)}" placeholder="Description courte...">
+        </div>
+        <div class="admin-field" style="margin:0">
+          <label><i class="fa-solid fa-layer-group"></i> Catégorie</label>
+          <select id="t-cat-${i}">
+            ${Object.entries(catConfig).map(([v, c]) => `<option value="${v}" ${t.cat === v ? 'selected' : ''}>${c.label}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="admin-field" style="margin:0;min-width:80px">
+        <label><i class="fa-solid fa-euro-sign"></i> Prix (€)</label>
+        <input type="number" id="t-price-${i}" value="${t.price}" min="0" style="font-size:18px;font-weight:bold;color:#00bfff">
+      </div>
+      <button class="btn-del" onclick="deleteTarif(${i})" title="Supprimer">🗑️ Supprimer</button>
+    </div>
+  `).join('');
+}
+
+function addTarifLine() {
+  tarifData.push({ cat: 'forfaits', name: 'Nouvelle prestation', desc: '', price: 0 });
+  renderAdminTarifs();
+  document.getElementById('tarifs-editor').lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function deleteTarif(i) {
+  if (confirm('Supprimer cette prestation ?')) {
+    tarifData.splice(i, 1);
+    renderAdminTarifs();
+  }
+}
+
+async function saveTarifs() {
+  tarifData.forEach((t, i) => {
+    t.name  = document.getElementById('t-name-' + i).value;
+    t.desc  = document.getElementById('t-desc-' + i).value;
+    t.cat   = document.getElementById('t-cat-' + i).value;
+    t.price = parseFloat(document.getElementById('t-price-' + i).value) || 0;
+  });
+  renderTarifsDisplay();
+  const saved = await fbSave('autoecolelongueau/tarifs', tarifData);
+  showToast(saved ? '✅ Tarifs mis à jour (Firebase)' : '✅ Tarifs mis à jour (local)');
+}
+
+function renderTarifsDisplay() {
+  const el = document.getElementById('tarifs-display');
+  const cats = ['forfaits', 'theorique', 'admin', 'lecons'];
+  let html = '';
+  cats.forEach(cat => {
+    const items = tarifData.filter(t => t.cat === cat);
+    if (!items.length) return;
+    const conf = catConfig[cat];
+    html += `<div class="${conf.cls}"><h3>${conf.h3}</h3><ul>`;
+    items.forEach(t => {
+      html += `<li><strong>${esc(t.name)} :</strong> ${t.price.toLocaleString('fr-FR')} €`;
+      if (t.desc) html += `<br>${esc(t.desc)}`;
+      html += `</li>`;
+    });
+    html += `</ul></div>`;
+  });
+  el.innerHTML = html;
+}
+
+// =============================================
+// FAQ
+// =============================================
+function renderAdminFaq() {
+  const el = document.getElementById('faq-editor');
+  el.innerHTML = faqData.map((f, i) => `
+    <div class="faq-admin-item" id="frow-${i}">
+      <div class="admin-field" style="margin-bottom:8px">
+        <label><i class="fa-solid fa-circle-question"></i> Question</label>
+        <input type="text" id="f-q-${i}" value="${esc(f.q)}">
+      </div>
+      <div class="admin-field" style="margin-bottom:0">
+        <label><i class="fa-solid fa-reply"></i> Réponse</label>
+        <textarea id="f-a-${i}" rows="3">${esc(f.a)}</textarea>
+      </div>
+      <div class="faq-admin-actions">
+        <button class="btn-del" onclick="deleteFaq(${i})">🗑️ Supprimer</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addFaqItem() {
+  faqData.push({ q: 'Nouvelle question ?', a: 'Réponse à rédiger...' });
+  renderAdminFaq();
+  document.getElementById('frow-' + (faqData.length - 1)).scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function deleteFaq(i) {
+  if (confirm('Supprimer cette question ?')) {
+    faqData.splice(i, 1);
+    renderAdminFaq();
+  }
+}
+
+async function saveFaq() {
+  faqData.forEach((f, i) => {
+    f.q = document.getElementById('f-q-' + i).value;
+    f.a = document.getElementById('f-a-' + i).value;
+  });
+  renderFaqDisplay();
+  const saved = await fbSave('autoecolelongueau/faq', faqData);
+  showToast(saved ? '✅ FAQ mise à jour (Firebase)' : '✅ FAQ mise à jour (local)');
+}
+
+function renderFaqDisplay() {
+  const el = document.getElementById('faq-display');
+  el.innerHTML = faqData.map(f => `
+    <button class="faq-question">${esc(f.q)}</button>
+    <div class="faq-answer"><p>${esc(f.a)}</p></div>
+  `).join('');
+  document.querySelectorAll('.faq-question').forEach(q => {
     q.addEventListener('click', () => {
       const answer = q.nextElementSibling;
       const isOpen = answer.style.display === 'block';
-      // Fermer toutes les réponses
       document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
-      // Ouvrir la réponse cliquée si elle n'était pas ouverte
       if (!isOpen) answer.style.display = 'block';
     });
   });
-</script>
-<script>
-  const backToTop = document.getElementById('backToTop');
+}
 
-  // Écoute le scroll
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) { // si on a descendu 300px
-      backToTop.style.display = 'block';
-    } else {
-      backToTop.style.display = 'none';
+// =============================================
+// UTILS
+// =============================================
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+let toastTimer;
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  const icon = t.querySelector('i');
+  document.getElementById('toast-msg').textContent = msg;
+  icon.className = isError ? 'fa-solid fa-circle-xmark' : 'fa-solid fa-circle-check';
+  t.className = isError ? 'error show' : 'show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// =============================================
+// SCROLL & NAVIGATION
+// =============================================
+window.addEventListener('scroll', () => {
+  document.getElementById('backToTop').style.display = window.scrollY > 300 ? 'block' : 'none';
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const target = document.getElementById(this.getAttribute('href').substring(1));
+    if (target) {
+      e.preventDefault();
+      const menuHeight = document.getElementById('menu-bandeau').offsetHeight;
+      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - menuHeight, behavior: 'smooth' });
     }
   });
+});
+
+// =============================================
+// INIT
+// =============================================
+(async () => {
+  await initAuth();
+
+  // Attend que Firebase soit prêt (chargement du module async)
+  setTimeout(async () => {
+    await loadFromFirebase();
+  }, 500);
+
+  renderHorairesDisplay();
+  renderContactsDisplay();
+  renderTarifsDisplay();
+  renderFaqDisplay();
+})();
 </script>
 </body>
 </html>
-
-
-
-
