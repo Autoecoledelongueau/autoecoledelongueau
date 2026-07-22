@@ -230,6 +230,7 @@
       border: none; border-radius: 5px; cursor: pointer;
     }
     .form-rdv button:hover { background: #0097d6; }
+    .form-rdv button:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .faq-question {
       width: 100%; background-color: #fff; color: #111; cursor: pointer;
@@ -753,7 +754,8 @@
   <section id="rendez-vous">
     <h2>Prise de rendez-vous</h2>
     <p style="text-align:center; margin-bottom:20px;">Pour toute demande d'inscription, d'évaluation de départ ou de renseignements complémentaires, merci de remplir le formulaire ci-dessous.</p>
- 
+
+    <form id="form-rdv" class="form-rdv" onsubmit="return sendRdvForm(event)">
       <label for="Nom">Nom :</label>
       <input type="text" id="Nom" name="Nom" placeholder="Nom" required>
       <label for="Prenom">Prénom :</label>
@@ -779,7 +781,8 @@
       </select>
       <label for="Objet">Informations supplémentaires :</label>
       <textarea id="Objet" name="Objet" rows="3" placeholder="Informations supplémentaires (si nécessaire)"></textarea>
-      <button type="submit">Envoyer la demande</button>
+      <button type="submit" id="rdv-submit-btn">Envoyer la demande</button>
+      <p id="rdv-status" style="text-align:center; margin-top:10px; display:none;"></p>
     </form>
     <p style="text-align:center; margin-top:20px;">Nous vous recontacterons rapidement pour fixer un rendez-vous.</p>
   </section>
